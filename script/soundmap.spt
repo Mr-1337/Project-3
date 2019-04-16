@@ -1,0 +1,18 @@
+#Example sound map file
+#The number signs denote comments
+#The first non-comment must be number of sound you are listing
+# > denotes the name of the map that holds the textfile
+# each line has to have either a comment or an assignment; no blank space
+####################################
+#Number of item sounds
+8
+####################################
+#sound assignments
+boop >boop2.wav
+star >coin.wav
+note >note.wav
+warp >warp.wav
+endoflevel >eol.wav
+die >die.wav
+health >health.wav
+hurt >hurt.wav

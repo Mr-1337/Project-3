@@ -1,0 +1,97 @@
+Version File:
+
+All previous versions up to this point where not documented by
+version.  Therefore all versions created by the Mario Game
+Project Team will be deemed Version 2.0.0.
+
+Version 2.0.1
+-Collision issue with jumping enemies Fixed: 
+	Frequently when jumping on top of an enemy, if they
+	jumped up at that time it would count as a hit against 
+	the player.  This issue was found in the updateCreature
+	method by removing an extra collision check.
+-Added Invisible Tile:
+	Previous to this version an invisible tile did not
+	exist.  Having an invisible tile can allow invisible
+	platforms, walls, and walk-ways
+-Changed Start Screen:
+	Changed the Start Screen so it uses banner.gif as the
+	main screen picture.  Also provided a new image to be 
+	used as the main screen picture.
+-Music playing after player falls and dies
+	The music would keep playing after the play dies by
+	falling through a hole.  This issue has been resolved
+	by stoping the music after the player falls down a hole
+-Sound FX timing adjustment
+	After dying by falling down a hole, the "dying" sound
+	would overlap with the restart of the level.  This has 
+	been fixed.
+-Timer Reset
+	After Exiting from the game to the menu screen and upon
+	reentering the game, the timer is the same as when it 
+	was exited.  This has been fixed so every new start to a
+	game starts the timer at zero.
+-Changed Closing Option for class Start Menu
+	After Exiting the game, the resources wouldn't be released.
+	To fix this, the 'X' button was disabled on the start menu
+	and the exit button MUST be used to close.  When this button
+	is pressed it forces everything to close and be released
+	System.exit(0);
+-Sound Issue Fix(1)
+	A potential buffer overflow was possible therefore the 
+	following fix was made
+	
+	int bufferSize = playbackFormat.getFrameSize() *
+            (Math.round(playbackFormat.getSampleRate() / 10)+1);
+-Sound Issue Fix(2)
+	This fix is more of a work around.  For some reason a 
+	sound anomally will occur while playing on some machines.
+	In order to counter act this a clearQueue function was added
+	to the Threadpool so upon entering a new level, the queue
+	would be cleared.
+	
+Version 2.1.1
+-Created SinuousFly Archtype
+	Similar to a fly, but moves in a sinuous fashion (basic
+	relationship sin(y) = x )
+-Created HomingFly Archtype
+	Similar to a fly, however it makes movements to intercept
+	the player.  Incorporated a responce time (horizontal and 
+	vertical) feature into the Creature class, so the higher 
+	the value, the longer it takes the creature to turn around
+	to follow the player.  
+-Created RandomFly Archtype
+	Similar to a fly, however its movements a purely random.
+	The only constaint in place is if the fly flies too high,
+	in which case, it is sent flying downward at an accelerated
+	rate.
+-Updated the Tutorial
+	*Added information on how to create an archtype
+	*Added information on how to change the start screen
+	*Added a tip on what to use for the background images
+	*Added a tip to use The Gimp as a free source for image
+	manipulation
+-Updated Creature.java to support health for all archtypes
+	Previous to this point, only the Boss.java class supported
+	health.  The health related functions (getHealth, setHealth
+	, etc) were moved to Creature.  Also the Creature constructor
+	initializes the health count to 1 (1 hit kill).
+-Fixed Scoreboard Reset Issue
+	The star/coin count and Base Bonus Multiple did not reset
+	if the character fell down a hole.  This has been fixed.
+-Created Balloon Archtype
+	This new archtype is a creature that the player can bounce on
+	but neither causes the other to be hurt.  This is considered to
+	be a "helper" archtype.  By specifying "helper = true;" in the
+	Archtype's constructor, that enemy will then become a helper.
+-Revised Boss Archtype A.I.
+	Before this point, the boss acted like a monkey archtype.  Now
+	The boss will now run from the player if the player jumps, and 
+	as soon as the player lands, the boss will rush back in.  The
+	speed does vary in the following way:  Doubles when running away;
+	goes back to normal if the players lands before colliding with
+	an object horizontally.  If a horizontal collision does occur
+	the doubled speed will remain even if the player is on the ground.
+-Note Powerup given Purpose (In Level Warp)
+	If the player collects a (music) note powerup then the player
+	skips ahead in the level horizontally.

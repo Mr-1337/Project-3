@@ -1,0 +1,51 @@
+#Example level script file
+#The number signs denote comments
+#Level's start at 1 go up incrementally by 1....
+# > denotes the name of the map that holds the textfile
+####################################
+#Number of Maps
+14
+####################################
+#Maps themselves
+1 >map2.txt
+>background.png
+>music.mid
+2 >map2.txt
+>background2.png
+>music2.midi
+3 >map3.txt
+>background.png
+>music.mid
+4 >map3.txt
+>background2.png
+>music2.midi
+5 >map4.txt
+>background.png
+>music2.midi
+6 >map4.txt
+>background2.png
+>music.mid
+7 >map5.txt
+>background.png
+>music.mid
+8 >map5.txt
+>background2.png
+>music2.midi
+9 >map6.txt
+>background.png
+>music2.midi
+10 >map6.txt
+>background2.png
+>music.mid
+11 >map7.txt
+>background.png
+>music2.midi
+12 >map7.txt
+>background2.png
+>music.mid
+13 >map1.txt
+>background.png
+>music2.midi
+14 >map1.txt
+>background2.png
+>music2.midi

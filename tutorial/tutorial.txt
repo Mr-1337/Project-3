@@ -1,0 +1,181 @@
+> Lines that begin with > symbol are ignored
+> The & at the beginning of a line denotes the stop of a tutorial message
+> Any blank lines MUST have a space
+Hello There and Welcome to my Tutorial!
+ 
+To play the game: 
+Use the arrow keys left and right to move me
+Use the space bar to make me jump
+Press the P key to Pause the game
+Use the ESC key to go back to the main menu
+&
+There is no Spoon!
+ 
+If you've noticed there are other tabs in this window.
+Click on the tab called "On-The-Fly".  Here you can
+Change many things including, player or enemy speed,
+gravity, max health, current health, and even apply
+invincibility.  Follow your changes with update and
+get back to playing the game.  Remember to set the 
+options back to normal if you restart the game in full
+screen other wise the changes will stay!  
+&
+Create Your Own Levels!
+ 
+Looking to Create your own levels?  No problem
+here.  Go to the maps folder and open an existing
+map.  I suggest map1.txt since it has good commenting.
+Start by modifying this map and save it as this name,
+or you can rename it and I'll show you how to add it
+to the set of levels next.....
+&
+Create Your Own Level Sets!
+ 
+What's a Level Set?  A level set is the definition of
+all the levels in the game.  In other words it tells
+the game "I want this map to be level 1, and this map
+to be level 2".  
+ 
+If you go to script folder, you will see a file
+called levelmap.spt.  Simply open this with a text
+editor and have a look.  Inside you first tell how
+many maps (levels) you are going to use total. Next
+you state the number of the levels as well as it's 
+map (remember map1.txt?). On the next line you can
+define what background you would like to use (just
+be sure to put this background in the images folder).
+TIP: Try using desktop wallpaper as background images. 
+On the next line you can define what music you would
+like to use (midi only!) I suggest you start by
+modifying this one.  Later on we'll show you how to
+make multiple levelset files and use them interchangeably.
+Example:
+1
+1 >map1.txt
+>background.png
+>music2.midi
+&
+Change the Look of the Character!
+ 
+I admit my mug isn't that great, but good news,
+you have the power to change it.  If you open up
+the script folder again, you will see another file
+called sprite.spt.  The file is well commented 
+and it's just a matter of modifying it and saving.
+All images you want to use should be in the images
+folder for this to work.  
+ 
+What is an archtype?  As you play with the sprite
+script file you will notice that it uses the word
+archtype. An archtype defines how an enemy moves/works.
+This feature will allow you to add up to 26 enemies 
+that all look different.
+&
+Add an Enemy!
+ 
+Don't close that sprite script file yet!  If you want
+to add an enemy simply scroll to the bottom, and add 
+it (be careful, remember to update the total values 
+at the top.  Even if the monkey archtype is being used
+you can use it again with 3 different images.
+ 
+Lets say you just added your 5th enemy to the list...
+The first 4 were a,b,c and d in your levels (remember 
+map1.txt?).  This new enemy will automatically be e.
+Now go back to one of your levels in the maps folder
+and add 'em in.
+&
+Give the Items a New Look!
+ 
+Tired of looking at the same old Items?  Fret not!
+In the scripts folder open the items.spt file with
+a text editor.  It's all laid out, you just have to
+choose/change the image names that are there.  Make
+sure the images are in the images folder of course.
+ 
+Keep in mind, the reason their are multiple images
+is because each picture is part of an animation sequence.
+Be sure to decide carefully how you want the images
+to show.
+&
+Better Sounds on the Way!
+ 
+Everyone likes different sounds so you can make
+the sounds better in this game (to your own liking
+that is).  In the scripts folder open up the 
+soundmap.spt file.  You will see that they are already
+defined.  You can change the name of the sound file
+used.  However!  There is a limitation, the only sounds
+files that will work are ones that are 22050 hz, 16 bit, 
+mono.  They also have to reside in the sounds folder.
+ 
+You may have noticed before the soundfile name there 
+is another name.  As you get more advanced, these names
+are used in the code of this program to reference to 
+these sounds.  Useful if you ever add another item.
+&
+Change Opening Screen!
+ 
+Don't like the look of the opening screen?  No problemo.
+There are two ways to go about it.  You can simply replace
+the image (800x600)in the images folder.  
+ 
+If you don't want to replace the image, you can add your 
+image to the images folder and change how the program points
+to the image.  In the StartMenu.java class (com...graphics 
+package) scroll down to the following code
+ 
+icon = new ImageIcon("images/banner.gif"); 
+ 
+and simply change the name (from: "images/banner.gif" 
+to: "images/newimage.jpeg")
+&
+Quality Image Manipulation!
+ 
+Looking to playing create some cool images for the game?
+"The Gimp" is an excellent software tool that is free for
+download on the internet.  
+&
+Code Execution (Advanced)
+ 
+This Feature is designed to show how and when functions
+are called while the game is playing.  There are 
+different levels of abstraction, and the higher you go
+the more work the game play gets.  This is mainly for 
+learning purposes.  If it gets too high for you, you can 
+modify how often you receive this information.  In the
+source code go to the CodeReflection class
+(codereflection package) and in the method run change
+the value of 20 in Thread.sleep(20);  The higher the
+number, the less frequency of interruption in game play
+the lower the number, the higher frequency of interruption
+but closer to realtime code reflection.
+&
+Creating an ArchType (Advanced)
+ 
+Interested in creating your own archtype's to use?  The
+first thing to do is create the archtype class that extends
+creature in the com.brackeen.javagamebook.tilegame.sprites 
+package and name it the name of your archtype (Fly.java).  
+Use existing archtype classes to help you create your own.  
+To manipulate the movement, you can override the update 
+method in this new class or change the updateCreature method 
+in the GameManager class.
+ 
+The next step is to update the ResourceManager class.  Two
+bits of code must be added.  Look under "//Create Animation"
+and "//Create Enemy" and you'll see how the existing archtypes
+have already been added.... you should be able to figure out 
+how to add your own.
+ 
+For the final steps you just have to Update Sprite Script File
+(remember to update total enemies and total images used) and add
+an instance of the archtype to a level.
+ 
+Tips:
+collideVertical() and collideHorizontal() take care of where and 
+how a tile collision are handle with a creature (badguy)
+ 
+Note: If you choose to change how the archtype moves (velocity) 
+remember to incorporate the enemySpeedMultiplier variable.
+&

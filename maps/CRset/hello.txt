@@ -1,0 +1,10 @@
+#This Map was generated using Map Creator v1.1
+EF                                                                                                  
+GD                                                                                                  
+AD                                           o  o  oooo  o     o      oo   o                        
+AHF                                          o  o  o     o     o     o  o  o                        
+AAHF                                         oooo  ooo   o     o     o  o  o                        
+AAAHF                          ooooo         o  o  o     o     o     o  o                           
+AAAAHF                   oooo  IIIII         o  o  oooo  oooo  oooo   oo   o                        
+AAAAAHF                  IIII                                                              ^ ^ ^   *
+AAAAAAHBBBBBBBBBBBBBF                     EBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBFJJJJJJJJJJ

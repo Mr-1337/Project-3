@@ -1,0 +1,79 @@
+#Example sprite script file
+####################################
+#The number signs denote comments but are not necessary
+#define the type of player followed by a number
+####################################
+#Each image in a series should be a progressive style
+#to indicate animation.
+####################################
+#each image should appear as though the sprite is looking 
+#to the right
+####################################
+# > denotes the name of the picture
+####################################
+#Total Enemies/Helpers
+8
+####################################
+#Total Sprite Images (including player sprites)
+26
+####################################
+#Player
+>player1.png
+>player2.png
+>player3.png
+####################################
+#Enemies
+# archtype followed by images
+#a
+grub
+>grub1.png
+>grub2.png
+####################################
+####################################
+#b
+fly
+>fly1.png
+>fly2.png
+>fly3.png
+####################################
+####################################
+#c
+monkey
+>monkey1.png
+>monkey2.png
+>monkey3.png
+####################################
+####################################
+#d
+boss
+>tank1.png
+>tank2.png
+>tank3.png
+####################################
+####################################
+#e
+sinuousfly
+>fly1.png
+>fly2.png
+>fly3.png
+####################################
+####################################
+#f
+homingfly
+>fly1.png
+>fly2.png
+>fly3.png
+####################################
+####################################
+#g
+randomfly
+>fly1.png
+>fly2.png
+>fly3.png
+####################################
+####################################
+#h
+balloon
+>balloon.png
+>balloon.png
+>balloon.png

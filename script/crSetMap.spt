@@ -1,0 +1,24 @@
+#Example level script file
+#The number signs denote comments
+#Level's start at 1 go up incrementally by 1....
+# > denotes the name of the map that holds the textfile
+####################################
+#Number of Maps
+5
+####################################
+#Maps themselves
+1 >CRset/hello.txt
+>background.png
+>CRSet/tetrisb.mid
+2 >CRset/maze1.txt
+>background.png
+>CRSet/tetrisb.mid
+3 >CRset/go.txt
+>background.png
+>CRSet/tetrisb.mid
+4 >CRset/dontfall.txt
+>background.png
+>CRSet/smb3hammer.mid
+5 >CRset/items.txt
+>background2.png
+>CRSet/smb3hammer.mid
