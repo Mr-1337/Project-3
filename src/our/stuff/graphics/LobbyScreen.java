@@ -1,27 +1,31 @@
 package our.stuff.graphics;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Insets;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import com.brackeen.javagamebook.tilegame.GameManager;
 
+import our.stuff.eventlisteners.BackButtonListener;
 import our.stuff.eventlisteners.HostButtonListener;
 import our.stuff.eventlisteners.JoinButtonListener;
-import our.stuff.eventlisteners.BackButtonListener;
+import our.stuff.networking.Server;
 
 public class LobbyScreen extends JFrame
 {
+	
+	private Server server;
+	
 	private JButton hostButton;
 	private JButton joinButton;
 	private JButton menuButton;
@@ -32,7 +36,6 @@ public class LobbyScreen extends JFrame
 	private JPanel hostPanel;
 	
 	private ImageIcon icon;
-	
 	private JTextField ipBox;
 	
 	public LobbyScreen()
@@ -97,6 +100,7 @@ public class LobbyScreen extends JFrame
 		case HOST:
 			screenContainer.remove(hostPanel);
 			buttonPanel.setVisible(true);
+			server.close();
 			state = DEFAULT;
 			break;
 			
@@ -114,10 +118,19 @@ public class LobbyScreen extends JFrame
 		buttonPanel.setVisible(false);
 		hostPanel = new JPanel();
 		JButton backButton = new JButton("Back");
+		JTextArea logText = new JTextArea(10, 20);
+		logText.append("Hosting game");
+		logText.setMargin(new Insets(5, 5, 5, 5));
+		logText.setEditable(false);
 		backButton.addActionListener(new BackButtonListener(this));
 		hostPanel.add(backButton);
+		hostPanel.add(logText);
 		
 		screenContainer.add(hostPanel);
+		
+		server = new Server();
+		server.start();
+		logText.append("\nServer started on " + server.getIP().getHostAddress());
 	}
 	/**
 	 * Initiates logic for joining a lobby

@@ -1,16 +1,12 @@
 package our.stuff.networking;
 
 /**
- * 
+ * A node representing some player over the network. 
  * @author Kyan
- *	A node representing some player over the network. 
  */
 public class PlayerNetworkNode
 {
 	
-	/**
-	 * A representation of a player over the network.
-	 */
 	public PlayerNetworkNode()
 	{
 		

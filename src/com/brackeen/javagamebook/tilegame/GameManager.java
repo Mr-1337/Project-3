@@ -51,7 +51,6 @@ public class GameManager extends GameCore {
 	        	if(toolScreen)
 	        	{
 	        		ToolFrame.getToolFrameInstance().setVisible(false);
-	        		
 	        	}
 	        	
 	        	startMenu.setVisible(true);
