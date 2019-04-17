@@ -5,11 +5,11 @@ This is the Mario Clone project for Team 1
 
 Team members are:
 
-Olu Alao
-Doug Andrade
-Noah Cabral
-Kyan Leite
-Ian Rodriguez
-Tyler Sousa
+Olu Alao,
+Doug Andrade,
+Noah Cabral,
+Kyan Leite,
+Ian Rodriguez,
+Tyler Sousa,
 Jake Tobiason
 
