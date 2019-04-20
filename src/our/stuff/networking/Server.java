@@ -58,7 +58,6 @@ public class Server extends Thread
 	 */
 	public void close()
 	{
-		socket.disconnect();
 		socket.close();
 	}
 }
