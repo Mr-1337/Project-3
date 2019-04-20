@@ -23,6 +23,7 @@ import our.stuff.eventlisteners.ConnectButtonListener;
 import our.stuff.eventlisteners.HostButtonListener;
 import our.stuff.eventlisteners.JoinButtonListener;
 import our.stuff.networking.Client;
+import our.stuff.networking.LobbyHostListener;
 import our.stuff.networking.Server;
 
 public class LobbyScreen extends JFrame
@@ -132,7 +133,7 @@ public class LobbyScreen extends JFrame
 		
 		screenContainer.add(hostPanel);
 		
-		server = new Server(25565);
+		server = new Server(25565, new LobbyHostListener(logText));
 		server.start();
 		logText.append("\nServer started on port: " + server.getPort());
 	}
