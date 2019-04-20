@@ -57,6 +57,7 @@ public class GameManager extends GameCore {
 	        }
 	        else if(multiScreen)
 	        {
+	        	lobbyScreen.setLocation(startMenu.getLocation());
 	        	lobbyScreen.setVisible(true);
 	        	startMenu.setVisible(false);
 	        	
@@ -72,6 +73,7 @@ public class GameManager extends GameCore {
 					}
 	        	}
 	        	
+	        	startMenu.setLocation(lobbyScreen.getLocation());
 	        	lobbyScreen.setVisible(false);
 	        	startMenu.setVisible(true);
 	        }
