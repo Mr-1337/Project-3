@@ -15,18 +15,20 @@ public class Server extends Thread
 	private DatagramSocket socket;
 	
 	private InetAddress address;
+	private final int port;
 	
-	public InetAddress getIP()
+	public int getPort()
 	{
-		return address;
+		return port;
 	}
 	
-	public Server()
+	public Server(int p)
 	{
 		super("Server Thread");
+		port = p;
 		try
 		{
-			socket = new DatagramSocket(25565);
+			socket = new DatagramSocket(port);
 			address = socket.getLocalAddress();
 			
 		} catch (SocketException e)
@@ -56,6 +58,7 @@ public class Server extends Thread
 	 */
 	public void close()
 	{
+		socket.disconnect();
 		socket.close();
 	}
 }
