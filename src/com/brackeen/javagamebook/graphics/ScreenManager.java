@@ -172,7 +172,7 @@ public class ScreenManager {
     public void setWindowedScreen(DisplayMode displayMode) {
       this.fullScreen = false;
       frame = new JFrame();
-      frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
       frame.setVisible(true);
       frame.setSize(displayMode.getWidth(), displayMode.getHeight());

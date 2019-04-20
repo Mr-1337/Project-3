@@ -30,6 +30,9 @@ public class GameManager extends GameCore {
     	startMenu = new StartMenu();
     	lobbyScreen = new LobbyScreen();
     	startMenu.setVisible(true);
+    	
+    	
+    	
     
     	while(!exitGame)
     	{
@@ -45,7 +48,17 @@ public class GameManager extends GameCore {
 	        if(runGame)
 	        {
 	        	startMenu.setVisible(false);
-	        	gameManager.run();
+	        	System.out.println("Starting to run");
+	        	switch (mode)
+	        	{
+	        	case MODE_NORMAL:
+	        		gameManager.run();
+	        		break;
+	        	case MODE_WAVE:
+	        		break;
+	        			
+	        	}
+	        	
 	        	runGame = false;
 	        	
 	        	if(toolScreen)
@@ -93,6 +106,17 @@ public class GameManager extends GameCore {
     	return(gameManager);
     }
     
+    // the gamemode we will launch
+    
+    private static int mode = 0;
+    public void setMode(int m)
+    {
+    	mode = m;
+    }
+    
+    public static final int MODE_NORMAL = 0;
+    public static final int MODE_WAVE = 1;
+    public static final int MODE_RACE = 2;
     
     private static GameManager gameManager = new GameManager();
     

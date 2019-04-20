@@ -24,6 +24,7 @@ import javax.swing.WindowConstants;
 
 import com.brackeen.javagamebook.tilegame.GameManager;
 
+import our.stuff.eventlisteners.StartButtonListener;
 import our.stuff.eventlisteners.BackButtonListener;
 import our.stuff.eventlisteners.ConnectButtonListener;
 import our.stuff.eventlisteners.HostButtonListener;
@@ -88,7 +89,7 @@ public class LobbyScreen extends JFrame
 		this.setSize(800,600);
 		this.add(screenContainer);
 		
-		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     	
     	icon = new ImageIcon("images/background.png");
     	 
@@ -180,7 +181,11 @@ public class LobbyScreen extends JFrame
 		blist.add(race);
 		blist.add(br);
 		blist.add(coop);
-		blist.add(new JButton("Start Game"));
+		
+		JButton start = new JButton("Start Game");
+		start.addActionListener(new StartButtonListener(this));
+		
+		blist.add(start);
 		blist.add(backButton);
 		
 		hostPanel.add(blist, BorderLayout.SOUTH);

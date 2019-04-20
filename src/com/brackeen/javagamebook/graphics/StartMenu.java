@@ -50,7 +50,7 @@ public class StartMenu extends JFrame{
     	this.add(screenContainer);
     	
     	//Release all Resources on Close
-		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     	
     	icon = new ImageIcon("images/banner.gif");
     	 
