@@ -629,6 +629,19 @@ public class ResourceManager {
     	return(s.getSoundByReference("hurt"));
     }
     
+    public String getRoundSound()
+    {	//return the sound for receiving damage, but not dying
+    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
+        	if(CodeReflection.getAbstactionLevel()>=0)
+        	{//check to make sure it's this level of abstraction
+        		e.fillInStackTrace();		
+        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
+        								e.getStackTrace()[0].getMethodName());
+        	}
+    	}
+    	return(s.getSoundByReference("round"));
+    }
+    
     public ScriptManager getScriptClass()
     {	//return your instance of s
     	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {

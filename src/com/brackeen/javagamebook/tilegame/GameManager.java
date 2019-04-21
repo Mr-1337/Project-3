@@ -10,6 +10,7 @@ import javax.sound.sampled.AudioFormat;
 import com.brackeen.javagamebook.util.*;
 
 import our.stuff.graphics.LobbyScreen;
+import our.stuff.graphics.RoundCount;
 
 import com.brackeen.javagamebook.graphics.*;
 import com.brackeen.javagamebook.sound.*;
@@ -157,6 +158,7 @@ public class GameManager extends GameCore {
     private Sound dieSound;
     private Sound healthSound;
     private Sound hurtSound;
+    private Sound roundSound;
     
     private InputManager inputManager;
     private TileMapRenderer renderer;
@@ -172,6 +174,7 @@ public class GameManager extends GameCore {
     private float baseScoreMultiplier=1.0f;
     
     private ScoreBoard scoreBoard = new ScoreBoard();
+    private RoundCount roundCount;
 
     private GameAction moveLeft;
     private GameAction moveRight;
@@ -266,6 +269,9 @@ public class GameManager extends GameCore {
         dieSound = soundManager.getSound("sounds/"+resourceManager.getDieSound());
         healthSound = soundManager.getSound("sounds/"+resourceManager.getHealthSound());
         hurtSound = soundManager.getSound("sounds/"+resourceManager.getHurtSound());
+        roundSound = soundManager.getSound("sounds/"+resourceManager.getRoundSound());
+        
+        roundCount = new RoundCount(roundSound, soundManager);
         
         // start music
         if(MUSIC_ON){
@@ -278,6 +284,7 @@ public class GameManager extends GameCore {
         
         //Time smoothie
         timeSmoothie = new TimeSmoothie();
+        roundCount.increment();
     }
 
     public void setRunGame(boolean value)
@@ -765,6 +772,7 @@ public class GameManager extends GameCore {
             }
             if (jump.isPressed()) {
                 player.jump(false);
+                roundCount.increment();
             }
             player.setVelocityX(velocityX);
         }
@@ -793,7 +801,16 @@ public class GameManager extends GameCore {
         }
         
         //pass in totalElapsedTime and currentElapsedTime
-        scoreBoard.draw(g, screen.getWidth(),screen.getHeight(), totalElapsedTime, resourceManager.getLevel(), health, hitClock, resourceManager.getScriptClass());
+        
+        switch (mode)
+        {
+        case MODE_NORMAL:
+        	scoreBoard.draw(g, screen.getWidth(),screen.getHeight(), totalElapsedTime, resourceManager.getLevel(), health, hitClock, resourceManager.getScriptClass());
+        	break;
+        case MODE_WAVE:
+        	roundCount.draw(g);
+        	break;
+        }
     }
         
 
@@ -1017,6 +1034,7 @@ public class GameManager extends GameCore {
         // update player
         updateCreature(player, elapsedTime);
         player.update(elapsedTime);
+        roundCount.update(elapsedTime);
 
         // update other sprites
         Iterator i = map.getSprites();

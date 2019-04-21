@@ -5,7 +5,7 @@
 # each line has to have either a comment or an assignment; no blank space
 ####################################
 #Number of item sounds
-8
+9
 ####################################
 #sound assignments
 boop >boop2.wav
@@ -16,3 +16,4 @@ endoflevel >eol.wav
 die >die.wav
 health >health.wav
 hurt >hurt.wav
+round >round.wav
