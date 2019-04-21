@@ -21,6 +21,7 @@ public class StartButtonListener implements ActionListener
 	public void actionPerformed(ActionEvent arg0)
 	{
 		// TODO Auto-generated method stub
+		GameManager.getGameManagerInstance().setMode(GameManager.MODE_WAVE);
 		GameManager.getGameManagerInstance().setRunGame(true);
 		GameManager.getGameManagerInstance().setMultiScreen(false);
 	}

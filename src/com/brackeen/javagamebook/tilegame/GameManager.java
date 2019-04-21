@@ -55,6 +55,8 @@ public class GameManager extends GameCore {
 	        		gameManager.run();
 	        		break;
 	        	case MODE_WAVE:
+	        		gameManager.initWave();
+	        		gameManager.gameLoop();
 	        		break;
 	        			
 	        	}
@@ -224,6 +226,53 @@ public class GameManager extends GameCore {
         	sequence =
         		midiPlayer.getSequence("sounds/"+resourceManager.levelMusic());
         	midiPlayer.play(sequence, true);
+        	//toggleDrumPlayback();
+        }
+        
+        //Time smoothie
+        timeSmoothie = new TimeSmoothie();
+    }
+    
+    public void initWave()
+    {
+    	super.init();
+    	health=START_HEALTH;
+        // set up input manager
+        initInput();
+
+        // start resource manager
+        
+        ScriptManager.getScriptManagerInstance().setLevelMappingFile("G1Maps.spt");
+        ScriptManager.rebuildInstance();
+        
+        resourceManager = new ResourceManager(
+        screen.getFullScreenWindow().getGraphicsConfiguration());
+
+        // load resources
+
+        renderer = new TileMapRenderer();
+        renderer.setBackground(
+            resourceManager.loadImage(resourceManager.levelBackground()));
+        // load first map
+        map = resourceManager.loadNextMap();
+
+        // load sounds
+        soundManager = new SoundManager(PLAYBACK_FORMAT);
+        starSound = soundManager.getSound("sounds/"+resourceManager.getStarSound());
+        boopSound = soundManager.getSound("sounds/"+resourceManager.getBoopSound());
+        noteSound = soundManager.getSound("sounds/"+resourceManager.getNoteSound());
+        warpSound = soundManager.getSound("sounds/"+resourceManager.getWarpSound());
+        endOfLevelSound = soundManager.getSound("sounds/"+resourceManager.getEndOfLevelSound());
+        dieSound = soundManager.getSound("sounds/"+resourceManager.getDieSound());
+        healthSound = soundManager.getSound("sounds/"+resourceManager.getHealthSound());
+        hurtSound = soundManager.getSound("sounds/"+resourceManager.getHurtSound());
+        
+        // start music
+        if(MUSIC_ON){
+        	midiPlayer = new MidiPlayer();
+        	sequence =
+        		midiPlayer.getSequence("sounds/"+resourceManager.levelMusic());
+        	//midiPlayer.play(sequence, true);
         	//toggleDrumPlayback();
         }
         
