@@ -772,7 +772,8 @@ public class GameManager extends GameCore {
             }
             if (jump.isPressed()) {
                 player.jump(false);
-                roundCount.increment();
+                if (mode == MODE_WAVE)
+                	roundCount.increment();
             }
             player.setVelocityX(velocityX);
         }
@@ -1034,7 +1035,17 @@ public class GameManager extends GameCore {
         // update player
         updateCreature(player, elapsedTime);
         player.update(elapsedTime);
-        roundCount.update(elapsedTime);
+               
+        switch(mode)
+        {
+        case MODE_NORMAL:
+        	break;
+        case MODE_WAVE:
+        	roundCount.update(elapsedTime);
+        	break;
+        case MODE_RACE:
+        	break;
+        }
 
         // update other sprites
         Iterator i = map.getSprites();

@@ -78,9 +78,9 @@ public class RoundCount implements ActionListener
 			{
 				fadeTime += elapsedTime;
 			}
-			if (fadeTime > 3000)
+			if (fadeTime > 2300)
 			{
-				fadeTime = (long)Math.max(2300f, fadeTime*0.8f);
+				fadeTime = 2300;
 			}
 		}
 	}
