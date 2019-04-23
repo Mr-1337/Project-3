@@ -936,7 +936,7 @@ public class GameManager extends GameCore {
         Gets the Sprite that collides with the specified Sprite,
         or null if no Sprite collides with the specified Sprite.
     */
-    public Sprite getSpriteCollision(Sprite sprite) {
+    public synchronized Sprite getSpriteCollision(Sprite sprite) {
 
     	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
         	if(CodeReflection.getAbstactionLevel()>=3)
@@ -1035,8 +1035,21 @@ public class GameManager extends GameCore {
         // update player
         updateCreature(player, elapsedTime);
         player.update(elapsedTime);
-        if (mode == MODE_WAVE)
+               
+        switch(mode)
+        {
+        case MODE_NORMAL:
+        	break;
+        case MODE_WAVE:
         	roundCount.update(elapsedTime);
+        	if (roundCount.isNewRound())
+        	{
+        		startWaveRound();
+        	}
+        	break;
+        case MODE_RACE:
+        	break;
+        }
 
         // update other sprites
         Iterator i = map.getSprites();
@@ -1058,7 +1071,16 @@ public class GameManager extends GameCore {
     
     public void startWaveRound()
     {
+    	Animation a = new Animation();
+    	a.addFrame(resourceManager.loadImage("zombie1.png"), 50);
     	
+    	for (int i = 0; i < (int)Math.floor(0.15 * roundCount.getRound() * 24); i++)
+    	{    		
+	    	Zombie zombo = new Zombie(a, a, a, a);
+	    	zombo.setX(RandomUtil.getRandomInt(128, 8000));
+	    	zombo.setY(450);
+	    	map.addSprite(zombo);
+    	}
     }
     
 

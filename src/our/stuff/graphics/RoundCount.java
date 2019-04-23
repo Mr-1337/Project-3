@@ -28,11 +28,12 @@ import com.brackeen.javagamebook.tilegame.GameManager;
 public class RoundCount implements ActionListener
 {
 	private ArrayList<BufferedImage> tallies = new ArrayList<BufferedImage>();
-	private int round = 18;
+	private int round = 500;
 	
 	private boolean changing = false;
 	private boolean fading = false;
 	private boolean held = false;
+	private boolean newRound = false;
 	
 	private Timer totalClock = new Timer(21000, this);
 	private Timer fadeClock = new Timer(9600, this);
@@ -60,6 +61,11 @@ public class RoundCount implements ActionListener
 			gr.drawImage(s, 0, 0, null);
 			gr.dispose();
 		}
+	}
+	
+	public int getRound()
+	{
+		return round;
 	}
 	
 	public void increment()
@@ -92,11 +98,18 @@ public class RoundCount implements ActionListener
 			{
 				fadeTime += elapsedTime;
 			}
-			if (fadeTime > 3000)
+			if (fadeTime > 2300)
 			{
-				fadeTime = (long)Math.max(2300f, fadeTime*0.8f);
+				fadeTime = 2300;
 			}
 		}
+	}
+	
+	public boolean isNewRound()
+	{
+		boolean temp = newRound;
+		newRound = false;
+		return temp;
 	}
 	
 	public void draw(Graphics g)
@@ -235,7 +248,7 @@ public class RoundCount implements ActionListener
 		held = false;
 		totalTime = 0;
 		fadeTime = 0;
-		GameManager.getGameManagerInstance().startWaveRound();
+		newRound = true;
 		}
 		if (arg0.getSource() == fadeClock)
 		{
