@@ -10,6 +10,7 @@ import javax.sound.sampled.AudioFormat;
 import com.brackeen.javagamebook.util.*;
 
 import our.stuff.graphics.LobbyScreen;
+import our.stuff.graphics.RoundCount;
 
 import com.brackeen.javagamebook.graphics.*;
 import com.brackeen.javagamebook.sound.*;
@@ -30,6 +31,9 @@ public class GameManager extends GameCore {
     	startMenu = new StartMenu();
     	lobbyScreen = new LobbyScreen();
     	startMenu.setVisible(true);
+    	
+    	
+    	
     
     	while(!exitGame)
     	{
@@ -45,7 +49,19 @@ public class GameManager extends GameCore {
 	        if(runGame)
 	        {
 	        	startMenu.setVisible(false);
-	        	gameManager.run();
+	        	System.out.println("Starting to run");
+	        	switch (mode)
+	        	{
+	        	case MODE_NORMAL:
+	        		gameManager.run();
+	        		break;
+	        	case MODE_WAVE:
+	        		gameManager.initWave();
+	        		gameManager.gameLoop();
+	        		break;
+	        			
+	        	}
+	        	
 	        	runGame = false;
 	        	
 	        	if(toolScreen)
@@ -57,6 +73,7 @@ public class GameManager extends GameCore {
 	        }
 	        else if(multiScreen)
 	        {
+	        	lobbyScreen.setLocation(startMenu.getLocation());
 	        	lobbyScreen.setVisible(true);
 	        	startMenu.setVisible(false);
 	        	
@@ -72,6 +89,7 @@ public class GameManager extends GameCore {
 					}
 	        	}
 	        	
+	        	startMenu.setLocation(lobbyScreen.getLocation());
 	        	lobbyScreen.setVisible(false);
 	        	startMenu.setVisible(true);
 	        }
@@ -91,6 +109,17 @@ public class GameManager extends GameCore {
     	return(gameManager);
     }
     
+    // the gamemode we will launch
+    
+    private static int mode = 0;
+    public void setMode(int m)
+    {
+    	mode = m;
+    }
+    
+    public static final int MODE_NORMAL = 0;
+    public static final int MODE_WAVE = 1;
+    public static final int MODE_RACE = 2;
     
     private static GameManager gameManager = new GameManager();
     
@@ -129,6 +158,7 @@ public class GameManager extends GameCore {
     private Sound dieSound;
     private Sound healthSound;
     private Sound hurtSound;
+    private Sound roundSound;
     
     private InputManager inputManager;
     private TileMapRenderer renderer;
@@ -144,6 +174,7 @@ public class GameManager extends GameCore {
     private float baseScoreMultiplier=1.0f;
     
     private ScoreBoard scoreBoard = new ScoreBoard();
+    private RoundCount roundCount;
 
     private GameAction moveLeft;
     private GameAction moveRight;
@@ -203,6 +234,57 @@ public class GameManager extends GameCore {
         
         //Time smoothie
         timeSmoothie = new TimeSmoothie();
+    }
+    
+    public void initWave()
+    {
+    	super.init();
+    	health=START_HEALTH;
+        // set up input manager
+        initInput();
+
+        // start resource manager
+        
+        ScriptManager.getScriptManagerInstance().setLevelMappingFile("G1Maps.spt");
+        ScriptManager.rebuildInstance();
+        
+        resourceManager = new ResourceManager(
+        screen.getFullScreenWindow().getGraphicsConfiguration());
+
+        // load resources
+
+        renderer = new TileMapRenderer();
+        renderer.setBackground(
+            resourceManager.loadImage(resourceManager.levelBackground()));
+        // load first map
+        map = resourceManager.loadNextMap();
+
+        // load sounds
+        soundManager = new SoundManager(PLAYBACK_FORMAT);
+        starSound = soundManager.getSound("sounds/"+resourceManager.getStarSound());
+        boopSound = soundManager.getSound("sounds/"+resourceManager.getBoopSound());
+        noteSound = soundManager.getSound("sounds/"+resourceManager.getNoteSound());
+        warpSound = soundManager.getSound("sounds/"+resourceManager.getWarpSound());
+        endOfLevelSound = soundManager.getSound("sounds/"+resourceManager.getEndOfLevelSound());
+        dieSound = soundManager.getSound("sounds/"+resourceManager.getDieSound());
+        healthSound = soundManager.getSound("sounds/"+resourceManager.getHealthSound());
+        hurtSound = soundManager.getSound("sounds/"+resourceManager.getHurtSound());
+        roundSound = soundManager.getSound("sounds/"+resourceManager.getRoundSound());
+        
+        roundCount = new RoundCount(roundSound, soundManager);
+        
+        // start music
+        if(MUSIC_ON){
+        	midiPlayer = new MidiPlayer();
+        	sequence =
+        		midiPlayer.getSequence("sounds/"+resourceManager.levelMusic());
+        	//midiPlayer.play(sequence, true);
+        	//toggleDrumPlayback();
+        }
+        
+        //Time smoothie
+        timeSmoothie = new TimeSmoothie();
+        roundCount.increment();
     }
 
     public void setRunGame(boolean value)
@@ -690,6 +772,8 @@ public class GameManager extends GameCore {
             }
             if (jump.isPressed()) {
                 player.jump(false);
+                if (mode == MODE_WAVE)
+                	roundCount.increment();
             }
             player.setVelocityX(velocityX);
         }
@@ -718,7 +802,16 @@ public class GameManager extends GameCore {
         }
         
         //pass in totalElapsedTime and currentElapsedTime
-        scoreBoard.draw(g, screen.getWidth(),screen.getHeight(), totalElapsedTime, resourceManager.getLevel(), health, hitClock, resourceManager.getScriptClass());
+        
+        switch (mode)
+        {
+        case MODE_NORMAL:
+        	scoreBoard.draw(g, screen.getWidth(),screen.getHeight(), totalElapsedTime, resourceManager.getLevel(), health, hitClock, resourceManager.getScriptClass());
+        	break;
+        case MODE_WAVE:
+        	roundCount.draw(g);
+        	break;
+        }
     }
         
 
@@ -843,7 +936,7 @@ public class GameManager extends GameCore {
         Gets the Sprite that collides with the specified Sprite,
         or null if no Sprite collides with the specified Sprite.
     */
-    public Sprite getSpriteCollision(Sprite sprite) {
+    public synchronized Sprite getSpriteCollision(Sprite sprite) {
 
     	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
         	if(CodeReflection.getAbstactionLevel()>=3)
@@ -942,6 +1035,21 @@ public class GameManager extends GameCore {
         // update player
         updateCreature(player, elapsedTime);
         player.update(elapsedTime);
+               
+        switch(mode)
+        {
+        case MODE_NORMAL:
+        	break;
+        case MODE_WAVE:
+        	roundCount.update(elapsedTime);
+        	if (roundCount.isNewRound())
+        	{
+        		startWaveRound();
+        	}
+        	break;
+        case MODE_RACE:
+        	break;
+        }
 
         // update other sprites
         Iterator i = map.getSprites();
@@ -960,7 +1068,21 @@ public class GameManager extends GameCore {
             sprite.update(elapsedTime);
         }
     }
-
+    
+    public void startWaveRound()
+    {
+    	Animation a = new Animation();
+    	a.addFrame(resourceManager.loadImage("zombie1.png"), 50);
+    	
+    	for (int i = 0; i < (int)Math.floor(0.15 * roundCount.getRound() * 24); i++)
+    	{    		
+	    	Zombie zombo = new Zombie(a, a, a, a);
+	    	zombo.setX(RandomUtil.getRandomInt(128, 8000));
+	    	zombo.setY(450);
+	    	map.addSprite(zombo);
+    	}
+    }
+    
 
     /**
         Updates the creature, applying gravity for creatures that
