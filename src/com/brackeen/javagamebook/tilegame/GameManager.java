@@ -772,7 +772,8 @@ public class GameManager extends GameCore {
             }
             if (jump.isPressed()) {
                 player.jump(false);
-                roundCount.increment();
+                if (mode == MODE_WAVE)
+                	roundCount.increment();
             }
             player.setVelocityX(velocityX);
         }
@@ -1034,7 +1035,8 @@ public class GameManager extends GameCore {
         // update player
         updateCreature(player, elapsedTime);
         player.update(elapsedTime);
-        roundCount.update(elapsedTime);
+        if (mode == MODE_WAVE)
+        	roundCount.update(elapsedTime);
 
         // update other sprites
         Iterator i = map.getSprites();
@@ -1053,7 +1055,12 @@ public class GameManager extends GameCore {
             sprite.update(elapsedTime);
         }
     }
-
+    
+    public void startWaveRound()
+    {
+    	
+    }
+    
 
     /**
         Updates the creature, applying gravity for creatures that
