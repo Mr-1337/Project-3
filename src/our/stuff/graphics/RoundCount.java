@@ -28,7 +28,7 @@ import com.brackeen.javagamebook.tilegame.GameManager;
 public class RoundCount implements ActionListener
 {
 	private ArrayList<BufferedImage> tallies = new ArrayList<BufferedImage>();
-	private int round = 500;
+	private int round = 0;
 	
 	private boolean changing = false;
 	private boolean fading = false;
@@ -244,11 +244,14 @@ public class RoundCount implements ActionListener
 		// TODO Auto-generated method stub
 		if (arg0.getSource() == totalClock)
 		{
-		changing = false;
-		held = false;
-		totalTime = 0;
-		fadeTime = 0;
-		newRound = true;
+			if (changing)
+			{
+				newRound = true;
+			}
+			changing = false;
+			held = false;
+			totalTime = 0;
+			fadeTime = 0;
 		}
 		if (arg0.getSource() == fadeClock)
 		{
