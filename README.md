@@ -5,7 +5,7 @@ This is the Mario Clone project for Team 1
 
 Team members are:
 
-Olu Alao,
+Olaoluwa Alao,
 Doug Andrade,
 Noah Cabral,
 Kyan Leite,
