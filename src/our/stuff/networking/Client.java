@@ -20,13 +20,15 @@ public class Client
 	 * Creates a client and attempts a UDP connection
 	 * @param host
 	 * The IP address of the game host
+	 * @param port
+	 * The port of the game host
 	 * @throws IOException 
 	 */
-	public Client(InetAddress host) throws IOException
+	public Client(InetAddress host, int port) throws IOException
 	{
 		socket = new DatagramSocket();
-		byte[] data = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-		DatagramPacket packet = new DatagramPacket(data, 10, host, 25565);
+		byte[] data = new byte[64];
+		DatagramPacket packet = new DatagramPacket(data, 64, host, port);
 		socket.send(packet);
 	}
 }

@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.io.IOException;
+import java.net.InetAddress;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,8 +19,11 @@ import javax.swing.WindowConstants;
 import com.brackeen.javagamebook.tilegame.GameManager;
 
 import our.stuff.eventlisteners.BackButtonListener;
+import our.stuff.eventlisteners.ConnectButtonListener;
 import our.stuff.eventlisteners.HostButtonListener;
 import our.stuff.eventlisteners.JoinButtonListener;
+import our.stuff.networking.Client;
+import our.stuff.networking.LobbyHostListener;
 import our.stuff.networking.Server;
 
 public class LobbyScreen extends JFrame
@@ -128,9 +133,9 @@ public class LobbyScreen extends JFrame
 		
 		screenContainer.add(hostPanel);
 		
-		server = new Server();
+		server = new Server(25565, new LobbyHostListener(logText));
 		server.start();
-		logText.append("\nServer started on " + server.getIP().getHostAddress());
+		logText.append("\nServer started on port: " + server.getPort());
 	}
 	/**
 	 * Initiates logic for joining a lobby
@@ -142,6 +147,8 @@ public class LobbyScreen extends JFrame
 		connectPanel = new JPanel();
 		JButton connectButton = new JButton("Connect");
 		JButton backButton = new JButton("Back");
+		
+		connectButton.addActionListener(new ConnectButtonListener(this));
 		backButton.addActionListener(new BackButtonListener(this));
 		
 		ipBox = new JTextField("Enter IP here",15);
@@ -150,6 +157,18 @@ public class LobbyScreen extends JFrame
 		connectPanel.add(ipBox);
 		connectPanel.add(connectButton);
 		screenContainer.add(connectPanel);
+	}
+	
+	public void connect()
+	{
+		try
+		{
+			Client client = new Client(InetAddress.getByName(ipBox.getText()), 25565);
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

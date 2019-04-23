@@ -6,6 +6,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+import our.stuff.eventlisteners.NetworkListener;
+
 /**
  * The server that is responsible for maintaining the connections of all the connected game clients
  * @author Kyan
@@ -15,19 +17,25 @@ public class Server extends Thread
 	private DatagramSocket socket;
 	
 	private InetAddress address;
+	private final int port;
+	private boolean open = false;
+	private NetworkListener callback;
 	
-	public InetAddress getIP()
+	public int getPort()
 	{
-		return address;
+		return port;
 	}
 	
-	public Server()
+	public Server(int p, NetworkListener callback)
 	{
 		super("Server Thread");
+		this.callback = callback;
+		port = p;
 		try
 		{
-			socket = new DatagramSocket(25565);
+			socket = new DatagramSocket(port);
 			address = socket.getLocalAddress();
+			open = true;
 			
 		} catch (SocketException e)
 		{
@@ -39,11 +47,14 @@ public class Server extends Thread
 	@Override
 	public void run()
 	{
-		DatagramPacket p = new DatagramPacket(new byte[256], 256);
+		DatagramPacket p = new DatagramPacket(new byte[64], 64);
 		try
 		{
-			socket.receive(p);
-			System.out.println("WE GOT A PACKET!!!");
+			while(open)
+			{
+				socket.receive(p);
+				callback.callback(p);
+			}
 		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block
@@ -56,6 +67,7 @@ public class Server extends Thread
 	 */
 	public void close()
 	{
+		open = false;
 		socket.close();
 	}
 }
