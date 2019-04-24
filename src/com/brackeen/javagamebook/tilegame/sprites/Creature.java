@@ -25,11 +25,11 @@ public abstract class Creature extends Sprite {
     public static float enemySpeedMultiplier		= 1.0f;
     public static float enemyJumpSpeedMultiplier	= 1.0f;
     
-    private Animation left;
-    private Animation right;
-    private Animation deadLeft;
-    private Animation deadRight;
-    private int state;
+    protected Animation left;
+    protected Animation right;
+    protected Animation deadLeft;
+    protected Animation deadRight;
+    protected int state;
     private long stateTime;
     protected Throwable e = new Throwable();
     
@@ -92,14 +92,6 @@ public abstract class Creature extends Sprite {
         Gets the maximum speed of this Creature.
     */
     public float getMaxSpeed() {    
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=4)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         return 0;
     }
 
@@ -109,14 +101,6 @@ public abstract class Creature extends Sprite {
         on screen. Normally, the creature starts moving left.
     */
     public void wakeUp() {
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=3)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         if (getState() == STATE_NORMAL && getVelocityX() == 0) {
             setVelocityX(-getMaxSpeed());
         }
@@ -128,14 +112,6 @@ public abstract class Creature extends Sprite {
         STATE_NORMAL, STATE_DYING, or STATE_DEAD.
     */
     public int getState() {
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=4)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         return state;
     }
 
@@ -145,14 +121,6 @@ public abstract class Creature extends Sprite {
         STATE_DYING, or STATE_DEAD.
     */
     public void setState(int state) {
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=4)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         if (this.state != state) {
             this.state = state;
             stateTime = 0;
@@ -168,14 +136,6 @@ public abstract class Creature extends Sprite {
         Checks if this creature is alive.
     */
     public boolean isAlive() {
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=5)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         return (state == STATE_NORMAL);
     }
 
@@ -184,14 +144,6 @@ public abstract class Creature extends Sprite {
         Checks if this creature is flying.
     */
     public boolean isFlying() {
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=4)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         return flying;
     }
 
@@ -199,14 +151,6 @@ public abstract class Creature extends Sprite {
     Checks if this creature is intelligent.
 */
 public boolean isIntelligent() {
-	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-    	if(CodeReflection.getAbstactionLevel()>=4)
-    	{//check to make sure it's this level of abstraction
-    		e.fillInStackTrace();		
-    		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-    								e.getStackTrace()[0].getMethodName());
-    	}
-	}
     return intelligent;
 }
     
@@ -215,14 +159,6 @@ public boolean isIntelligent() {
      * 
      */
     public boolean isTrackingPlayer() {
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=4)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return this.trackPlayer;
     }
 
@@ -231,14 +167,6 @@ public boolean isIntelligent() {
         tile horizontally.
     */
     public void collideHorizontal() {
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=4)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         setVelocityX(-getVelocityX());
     }
 
@@ -249,14 +177,6 @@ public boolean isIntelligent() {
     */
     public void collideVertical() {
         // check if collided with ground
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=4)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         if (getVelocityY() > 0 && !flying) 
         {
             onGround = true;
@@ -269,14 +189,6 @@ public boolean isIntelligent() {
         Updates the animaton for this creature.
     */
     public void update(long elapsedTime) {
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=5)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         // select the correct Animation
         Animation newAnim = anim;
         if (getVelocityX() < 0) {
@@ -321,14 +233,6 @@ public boolean isIntelligent() {
         if forceJump is true.
     */
     public void jump(boolean forceJump) {
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=4)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         if ((onGround || forceJump) && isAlive()) {
             onGround = false;
             setVelocityY(jumpSpeed * enemyJumpSpeedMultiplier);
@@ -342,14 +246,6 @@ public boolean isIntelligent() {
 	}
 
     public void setY(float y) {
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=4)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         // check if falling
         if (Math.round(y) > Math.round(getY())) {
             onGround = false;
@@ -383,40 +279,16 @@ public boolean isIntelligent() {
     
 	public int getHealth()
 	{
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=3)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
 		return health;
 	}
 	
 	public void decrementHealth()
 	{
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=3)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
 		health--;
 	}
 	
 	public void setHealth(int x)
 	{
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=3)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
 		health=x;
 	}
 	

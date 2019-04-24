@@ -19,14 +19,6 @@ public class Sprite {
         Creates a new Sprite object with the specified Animation.
     */
     public Sprite(Animation anim) {
-    	if(CodeReflection.isTracing() && GraphicsPackageTracingEnabled.getGraphicsPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=1)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         this.anim = anim;
     }
 

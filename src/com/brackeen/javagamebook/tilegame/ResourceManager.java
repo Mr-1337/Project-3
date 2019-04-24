@@ -56,14 +56,6 @@ public class ResourceManager {
         Gets an image from the images/ directory.
     */
     public Image loadImage(String name) {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         String filename = "images/" + name;
         return new ImageIcon(filename).getImage();
     }
@@ -446,6 +438,24 @@ public class ResourceManager {
                 	a.addFrame(images[i][imageIndex++], 10);
                 	enemyAnim[x][i]= a;
                 }
+                else
+            	if(s.getArchType(x).compareTo("bee")==0) {
+                	Animation a = new Animation();
+                	a.addFrame(images[i][imageIndex++], 50);
+                	enemyAnim[x][i] = a;
+				}
+            	else
+            	if(s.getArchType(x).compareTo("bear")==0) {
+                	Animation a = new Animation();
+                	a.addFrame(images[i][imageIndex++], 50);
+                	enemyAnim[x][i] = a;
+				}
+            	else
+            	if(s.getArchType(x).compareTo("raccoon")==0) {
+                	Animation a = new Animation();
+                	a.addFrame(images[i][imageIndex++], 50);
+                	enemyAnim[x][i] = a;
+				}
             }
         }
 
@@ -493,18 +503,22 @@ public class ResourceManager {
             if(s.getArchType(x).compareTo("zombie")==0)
             	enemySprites[x]=new Zombie(enemyAnim[x][0], enemyAnim[x][1],
             			enemyAnim[x][2], enemyAnim[x][3]);
+            else
+        	if(s.getArchType(x).compareTo("bee")==0) {
+            	enemySprites[x]=new Bee(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            }
+        	else
+        	if(s.getArchType(x).compareTo("bear")==0) {
+            	enemySprites[x]=new Bear(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            }
+        	else
+        	if(s.getArchType(x).compareTo("raccoon")==0) {
+            	enemySprites[x]=new Raccoon(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            }
     }
     
     public String levelBackground()
     {	//return the image name of the background for the current map
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	if(currentMap==-1) //first instance load
     		return(s.getLevelImage(1));
     	return(s.getLevelImage(currentMap));
