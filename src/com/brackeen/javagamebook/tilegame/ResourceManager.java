@@ -407,13 +407,14 @@ public class ResourceManager {
             playerAnim[i] = createPlayerAnim(
                 images[i][imageIndex++], images[i][imageIndex++], images[i][imageIndex++]);
             for(int x=0; x<enemies;x++)
+            {
             	if(s.getArchType(x).compareTo("grub")==0)
                     enemyAnim[x][i] = createGrubAnim(
                             images[i][imageIndex++], images[i][imageIndex++]);	
             	else
             	if(s.getArchType(x).compareTo("fly")==0)
             		enemyAnim[x][i] = createFlyAnim(
-            			images[i][imageIndex++], images[i][imageIndex++], images[i][imageIndex++]);
+            				images[i][imageIndex++], images[i][imageIndex++], images[i][imageIndex++]);
             	else
             	if(s.getArchType(x).compareTo("monkey")==0)
             		enemyAnim[x][i]=createMonkeyAnim(
@@ -438,6 +439,14 @@ public class ResourceManager {
             	if(s.getArchType(x).compareTo("balloon")==0)
             		enemyAnim[x][i]=createFlyAnim(
             				images[i][imageIndex++], images[i][imageIndex++], images[i][imageIndex++]);
+            	else
+                if(s.getArchType(x).compareTo("zombie")==0)
+                {
+                	Animation a = new Animation();
+                	a.addFrame(images[i][imageIndex++], 10);
+                	enemyAnim[x][i]= a;
+                }
+            }
         }
 
         // create creature sprites
@@ -479,6 +488,10 @@ public class ResourceManager {
             else
             if(s.getArchType(x).compareTo("balloon")==0)
             	enemySprites[x]=new Balloon(enemyAnim[x][0], enemyAnim[x][1],
+            			enemyAnim[x][2], enemyAnim[x][3]);
+            else
+            if(s.getArchType(x).compareTo("zombie")==0)
+            	enemySprites[x]=new Zombie(enemyAnim[x][0], enemyAnim[x][1],
             			enemyAnim[x][2], enemyAnim[x][3]);
     }
     
@@ -627,6 +640,19 @@ public class ResourceManager {
         	}
     	}
     	return(s.getSoundByReference("hurt"));
+    }
+    
+    public String getRoundSound()
+    {	//return the sound for receiving damage, but not dying
+    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
+        	if(CodeReflection.getAbstactionLevel()>=0)
+        	{//check to make sure it's this level of abstraction
+        		e.fillInStackTrace();		
+        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
+        								e.getStackTrace()[0].getMethodName());
+        	}
+    	}
+    	return(s.getSoundByReference("round"));
     }
     
     public ScriptManager getScriptClass()

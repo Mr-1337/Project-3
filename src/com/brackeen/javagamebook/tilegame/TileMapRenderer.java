@@ -133,6 +133,7 @@ public class TileMapRenderer {
             null);
 
         // draw sprites
+     
         Iterator i = map.getSprites();
         while (i.hasNext()) {
             Sprite sprite = (Sprite)i.next();
