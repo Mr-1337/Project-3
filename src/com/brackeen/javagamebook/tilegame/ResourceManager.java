@@ -455,7 +455,25 @@ public class ResourceManager {
                 	Animation a = new Animation();
                 	a.addFrame(images[i][imageIndex++], 50);
                 	enemyAnim[x][i] = a;
+            	}
+            	else
+                if(s.getArchType(x).compareTo("ant")==0) {
+                    	Animation a = new Animation();
+                    	a.addFrame(images[i][imageIndex++], 50);
+                    	enemyAnim[x][i] = a;
 				}
+                else
+                if(s.getArchType(x).compareTo("fireant")==0) {
+                        Animation a = new Animation();
+                        a.addFrame(images[i][imageIndex++], 50);
+                        enemyAnim[x][i] = a;
+    				}
+                else
+                if(s.getArchType(x).compareTo("dragonfly")==0) {
+                            Animation a = new Animation();
+                            a.addFrame(images[i][imageIndex++], 50);
+                            enemyAnim[x][i] = a;
+        				}
             }
         }
 
@@ -515,6 +533,18 @@ public class ResourceManager {
         	if(s.getArchType(x).compareTo("raccoon")==0) {
             	enemySprites[x]=new Raccoon(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
             }
+        	else
+        	if(s.getArchType(x).compareTo("ant")==0) {
+            	enemySprites[x]=new Ant(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+        	}
+        	else
+            if(s.getArchType(x).compareTo("fireant")==0) {
+                enemySprites[x]=new FireAnt(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            }
+        	else
+            if(s.getArchType(x).compareTo("dragonfly")==0) {
+                    enemySprites[x]=new Dragonfly(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+         }
     }
     
     public String levelBackground()
