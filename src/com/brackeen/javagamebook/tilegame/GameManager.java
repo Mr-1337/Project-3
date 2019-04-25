@@ -1,24 +1,39 @@
 package com.brackeen.javagamebook.tilegame;
 //Test comment for github
-import java.awt.*;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import javax.sound.midi.Sequence;
 import javax.sound.sampled.AudioFormat;
 
-import com.brackeen.javagamebook.util.*;
+import com.brackeen.javagamebook.codereflection.CodeReflection;
+import com.brackeen.javagamebook.graphics.Animation;
+import com.brackeen.javagamebook.graphics.Sprite;
+import com.brackeen.javagamebook.graphics.StartMenu;
+import com.brackeen.javagamebook.graphics.ToolFrame;
+import com.brackeen.javagamebook.input.GameAction;
+import com.brackeen.javagamebook.input.InputManager;
+import com.brackeen.javagamebook.sound.MidiPlayer;
+import com.brackeen.javagamebook.sound.Sound;
+import com.brackeen.javagamebook.sound.SoundManager;
+import com.brackeen.javagamebook.test.GameCore;
+import com.brackeen.javagamebook.test.ScoreBoard;
+import com.brackeen.javagamebook.tilegame.sprites.Boss;
+import com.brackeen.javagamebook.tilegame.sprites.Creature;
+import com.brackeen.javagamebook.tilegame.sprites.Player;
+import com.brackeen.javagamebook.tilegame.sprites.PowerUp;
+import com.brackeen.javagamebook.tilegame.sprites.Zombie;
+import com.brackeen.javagamebook.util.RandomUtil;
+import com.brackeen.javagamebook.util.TimeSmoothie;
 
 import our.stuff.graphics.LobbyScreen;
+import our.stuff.graphics.Projectile;
 import our.stuff.graphics.RoundCount;
-
-import com.brackeen.javagamebook.graphics.*;
-import com.brackeen.javagamebook.sound.*;
-import com.brackeen.javagamebook.input.*;
-import com.brackeen.javagamebook.test.*;
-import com.brackeen.javagamebook.tilegame.sprites.*;
-
-import com.brackeen.javagamebook.codereflection.*;
 
 /**
     GameManager manages all parts of the game.
@@ -133,7 +148,7 @@ public class GameManager extends GameCore {
     private int LEVEL_SWITCH_PAUSE=2100; //amount of time to wait between levels
     private int MAX_HIT_CLOCK=2000;	//amount of invulnerability time after getting hit
     private int HEALTH_MAX=10;		//total amount of health a player can have
-    private boolean MUSIC_ON = true; //by default, have the music on
+    private boolean MUSIC_ON = false; //by default, have the music on
     private boolean SOUND_ON = true;	//by default, have the sound on
     private boolean INVINCIBLE = false;	//by default the player is not invincible
     
@@ -712,7 +727,8 @@ public class GameManager extends GameCore {
     */
     public void stop() {
         super.stop();
-        midiPlayer.close();
+        if (MUSIC_ON)
+        	midiPlayer.close();
         soundManager.close();
         scoreBoard.setStarTotal(0);
         this.baseScoreMultiplier=1.0f;
@@ -897,14 +913,6 @@ public class GameManager extends GameCore {
         one of the Sprites is a Creature that is not alive.
     */
     public synchronized boolean isCollision(Sprite s1, Sprite s2) {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=5)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         // if the Sprites are the same, return false
         if (s1 == s2) {
             return false;
@@ -938,14 +946,6 @@ public class GameManager extends GameCore {
     */
     public synchronized Sprite getSpriteCollision(Sprite sprite) {
 
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=3)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         // run through the list of Sprites
         Iterator i = map.getSprites();
         boolean found = false;
@@ -970,17 +970,7 @@ public class GameManager extends GameCore {
         Updates Animation, position, and velocity of all Sprites
         in the current map.
     */
-    public void update(long elapsedTime) {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=3)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
-    	
-    	
+    public void update(long elapsedTime) {   	   	
     	// smooth out the elapsed time
     	elapsedTime = timeSmoothie.getTime(elapsedTime);
     	currentElapsedTime = elapsedTime;
@@ -1052,6 +1042,11 @@ public class GameManager extends GameCore {
         }
 
         // update other sprites
+        while (!spriteQueue.isEmpty())
+        {
+        	map.addSprite(spriteQueue.remove());
+        }
+        
         Iterator i = map.getSprites();
         while (i.hasNext()) {
             Sprite sprite = (Sprite)i.next();
@@ -1067,6 +1062,13 @@ public class GameManager extends GameCore {
             // normal update
             sprite.update(elapsedTime);
         }
+    }
+    
+    private Queue<Sprite> spriteQueue = new LinkedList<Sprite>();
+    
+    public void queueSprite(Sprite s)
+    {
+    	spriteQueue.add(s);
     }
     
     public void startWaveRound()
@@ -1091,14 +1093,6 @@ public class GameManager extends GameCore {
     private void updateCreature(Creature creature,
         long elapsedTime)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=3)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
 
     	Player player = (Player)map.getPlayer();
         // apply gravity
@@ -1209,14 +1203,6 @@ public class GameManager extends GameCore {
     public void checkPlayerCollision(Player player,
         boolean canKill)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=3)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	boolean execute=true;
         if (!player.isAlive()) {
             return;
@@ -1235,6 +1221,7 @@ public class GameManager extends GameCore {
                 // kill the badguy and make player bounce, and increase score
             	
             	//Multiplier is equal to base level multiplier times 2^numberOfBadGuysKilled
+            	
             	if(badguy instanceof Boss){
             		execute=false;
             		((Boss)badguy).decrementHealth();
@@ -1299,7 +1286,7 @@ public class GameManager extends GameCore {
             		}
             	}
             	
-            	if(execute)
+            	if(execute && !(badguy instanceof Projectile))
             	{	
             		if(SOUND_ON)
             			soundManager.play(boopSound);
@@ -1327,7 +1314,8 @@ public class GameManager extends GameCore {
 	            	if(health==0)
 	            	{	//player has run out of health, he will die
 	            		// player dies!
-	            		midiPlayer.stop();
+	            		if(MUSIC_ON)
+	            			midiPlayer.stop();
 	            		
 	            		if(SOUND_ON)
 	            			soundManager.play(dieSound);
@@ -1356,18 +1344,10 @@ public class GameManager extends GameCore {
 
 
     /**
-        Gives the player the speicifed power up and removes it
+        Gives the player the specified power up and removes it
         from the map.
     */
     public void acquirePowerUp(PowerUp powerUp) {  	
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         // remove it from the map
         map.removeSprite(powerUp);
 
@@ -1481,4 +1461,5 @@ public class GameManager extends GameCore {
          
         }
     }
+
 }
