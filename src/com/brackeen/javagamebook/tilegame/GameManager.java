@@ -148,7 +148,7 @@ public class GameManager extends GameCore {
     private int LEVEL_SWITCH_PAUSE=2100; //amount of time to wait between levels
     private int MAX_HIT_CLOCK=2000;	//amount of invulnerability time after getting hit
     private int HEALTH_MAX=10;		//total amount of health a player can have
-    private boolean MUSIC_ON = false; //by default, have the music on
+    private boolean MUSIC_ON = true; //by default, have the music on
     private boolean SOUND_ON = true;	//by default, have the sound on
     private boolean INVINCIBLE = false;	//by default the player is not invincible
     
@@ -1074,7 +1074,7 @@ public class GameManager extends GameCore {
     public void startWaveRound()
     {
     	Animation a = new Animation();
-    	a.addFrame(resourceManager.loadImage("zombie1.png"), 50);
+    	a.addFrame(resourceManager.loadImage("zombie.png"), 50);
     	
     	for (int i = 0; i < (int)Math.floor(0.15 * roundCount.getRound() * 24); i++)
     	{    		
@@ -1389,7 +1389,8 @@ public class GameManager extends GameCore {
         	player.setY(1000);			//move to arbitrary place; fix collsion issue with heart (two levels forward)
         	this.baseScoreMultiplier++;
         	
-        	midiPlayer.stop();	//temporarily stop music
+        	if (MUSIC_ON)
+        		midiPlayer.stop();	//temporarily stop music
         	
         	scoreBoard.drawLevelOver();	//draw  Level over banner
             
@@ -1429,7 +1430,8 @@ public class GameManager extends GameCore {
         	Player player = (Player)map.getPlayer();
         	player.setY(1000); //looks like player went "in"
         	this.baseScoreMultiplier++;
-        	midiPlayer.stop();		//temporarily stop music
+        	if(MUSIC_ON)
+        		midiPlayer.stop();		//temporarily stop music
             
         	//TODO have scoreboard print warp banner :example level over banner
         	draw(screen.getGraphics());

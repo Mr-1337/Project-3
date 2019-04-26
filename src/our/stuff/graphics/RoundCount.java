@@ -28,7 +28,7 @@ import com.brackeen.javagamebook.tilegame.GameManager;
 public class RoundCount implements ActionListener
 {
 	private ArrayList<BufferedImage> tallies = new ArrayList<BufferedImage>();
-	private int round = 0;
+	private int round = 99;
 	
 	private boolean changing = false;
 	private boolean fading = false;

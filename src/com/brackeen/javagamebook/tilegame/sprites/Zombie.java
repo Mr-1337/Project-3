@@ -11,6 +11,7 @@ public class Zombie extends Creature
 		super(left, right, deadLeft, deadRight);
 		// TODO Auto-generated constructor stub
 		trackPlayer = true;
+		this.wakeUp();
 	}
 	
 	public float getMaxSpeed() {
@@ -22,7 +23,7 @@ public class Zombie extends Creature
         								e.getStackTrace()[0].getMethodName());
         	}
     	}
-        return 0.40f * enemySpeedMultiplier;
+        return 0.20f * enemySpeedMultiplier;
     }
 
 }
