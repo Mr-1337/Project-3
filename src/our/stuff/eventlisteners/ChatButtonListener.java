@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import our.stuff.networking.Client;
@@ -14,12 +15,14 @@ import our.stuff.networking.Server;
 public class ChatButtonListener implements ActionListener
 {
 	
-	private JTextField input;
+	private JTextField chat;
+	private JTextArea history;
 	private NetworkInterface connection;
 	
-	public ChatButtonListener(JTextField chat, NetworkInterface connection)
+	public ChatButtonListener(JTextField chat, JTextArea history, NetworkInterface connection)
 	{
-		input = chat;
+		this.chat = chat;
+		this.history = history;
 		this.connection = connection;
 	}
 	
@@ -29,10 +32,13 @@ public class ChatButtonListener implements ActionListener
 		// TODO Auto-generated method stub
 		try
 		{
-			String text = input.getText();
+			String text = chat.getText();
 			if (!text.isEmpty())
+			{
 				connection.send(PacketManager.genChatPacket(text));
-			input.setText(null);
+				history.append(text + '\n');
+			}
+			chat.setText(null);
 		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block

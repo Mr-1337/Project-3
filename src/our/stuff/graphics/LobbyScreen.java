@@ -198,7 +198,7 @@ public class LobbyScreen extends JFrame
 		
 		chatBox.setEnabled(true);
 		sendButton.setEnabled(true);
-		sendButton.addActionListener(new ChatButtonListener(chatBox, server));
+		sendButton.addActionListener(new ChatButtonListener(chatBox, chatHistory, server));
 		
 		logText.append("\nServer started on port: " + server.getPort());
 	}
@@ -232,7 +232,7 @@ public class LobbyScreen extends JFrame
 			
 			chatBox.setEnabled(true);
 			sendButton.setEnabled(true);
-			sendButton.addActionListener(new ChatButtonListener(chatBox, client));
+			sendButton.addActionListener(new ChatButtonListener(chatBox, chatHistory, client));
 			
 			client.send(PacketManager.genPacketData(PacketManager.TYPE_CONNECT));
 			
