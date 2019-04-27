@@ -2,6 +2,7 @@ package our.stuff.networking;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.util.Arrays;
 
 import javax.swing.JTextArea;
 
@@ -21,6 +22,7 @@ public class LobbyHostListener extends NetworkListener
 	@Override
 	public void callback(DatagramPacket packet)
 	{
+		packet.setLength(packet.getOffset() + packet.getLength()); 
 		byte[] data = packet.getData();
 	    StringBuilder sb = new StringBuilder();
 	    for (byte b : data) {
@@ -36,7 +38,9 @@ public class LobbyHostListener extends NetworkListener
 			infoBox.append("\nConnection from " + packet.getAddress().getHostAddress());
 			break;
 		case PacketManager.TYPE_CHAT:
-			chatBox.append(new String(packet.getData()));
+			String message = new String(Arrays.copyOfRange(data, 1, data.length)) + '\n';
+			chatBox.append(message);
+			break;
 		}
 	}
 }

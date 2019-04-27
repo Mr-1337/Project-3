@@ -229,11 +229,12 @@ public class LobbyScreen extends JFrame
 		try
 		{
 			client = new Client(InetAddress.getByName(ipBox.getText()), 25565);
-			client.send(PacketManager.genPacketData(PacketManager.TYPE_CONNECT));
 			
 			chatBox.setEnabled(true);
 			sendButton.setEnabled(true);
 			sendButton.addActionListener(new ChatButtonListener(chatBox, client));
+			
+			client.send(PacketManager.genPacketData(PacketManager.TYPE_CONNECT));
 			
 		} catch (IOException e)
 		{

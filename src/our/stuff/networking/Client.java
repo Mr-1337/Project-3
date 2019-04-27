@@ -29,6 +29,7 @@ public class Client implements NetworkInterface
 	public Client(InetAddress host, int port) throws IOException
 	{
 		socket = new DatagramSocket();
+		this.port = port;
 		serverIP = host;
 	}
 	

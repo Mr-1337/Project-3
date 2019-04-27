@@ -52,6 +52,7 @@ public class Server extends Thread implements NetworkInterface
 		{
 			while(open)
 			{
+				p.setData(new byte[64]);
 				socket.receive(p);
 				callback.callback(p);
 			}
