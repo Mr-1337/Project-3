@@ -74,7 +74,6 @@ public class Server extends Thread implements NetworkInterface
 	@Override
 	public void send(byte[] data)
 	{
-		// TODO Auto-generated method stub
-		
+		System.out.println("Sending packet to clients");
 	}
 }

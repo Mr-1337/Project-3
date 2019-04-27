@@ -29,7 +29,9 @@ public class ChatButtonListener implements ActionListener
 		// TODO Auto-generated method stub
 		try
 		{
-			connection.send(PacketManager.genChatPacket(input.getText()));
+			String text = input.getText();
+			if (!text.isEmpty())
+				connection.send(PacketManager.genChatPacket(text));
 			input.setText(null);
 		} catch (IOException e)
 		{

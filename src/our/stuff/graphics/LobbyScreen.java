@@ -151,9 +151,6 @@ public class LobbyScreen extends JFrame
 	 */
 	public void host()
 	{
-		chatBox.setEnabled(true);
-		sendButton.setEnabled(true);
-		sendButton.addActionListener(new ChatButtonListener(chatBox, server));
 		state = HOST;
 		buttonPanel.setVisible(false);
 		hostPanel = new JPanel(new BorderLayout(2, 2));
@@ -198,6 +195,11 @@ public class LobbyScreen extends JFrame
 		
 		server = new Server(25565, new LobbyHostListener(logText, chatHistory));
 		server.start();
+		
+		chatBox.setEnabled(true);
+		sendButton.setEnabled(true);
+		sendButton.addActionListener(new ChatButtonListener(chatBox, server));
+		
 		logText.append("\nServer started on port: " + server.getPort());
 	}
 	/**
@@ -205,9 +207,6 @@ public class LobbyScreen extends JFrame
 	 */
 	public void join()
 	{
-		chatBox.setEnabled(true);
-		sendButton.setEnabled(true);
-		sendButton.addActionListener(new ChatButtonListener(chatBox, client));
 		state = JOIN;
 		buttonPanel.setVisible(false);
 		connectPanel = new JPanel();
@@ -231,6 +230,11 @@ public class LobbyScreen extends JFrame
 		{
 			client = new Client(InetAddress.getByName(ipBox.getText()), 25565);
 			client.send(PacketManager.genPacketData(PacketManager.TYPE_CONNECT));
+			
+			chatBox.setEnabled(true);
+			sendButton.setEnabled(true);
+			sendButton.addActionListener(new ChatButtonListener(chatBox, client));
+			
 		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block
