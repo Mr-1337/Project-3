@@ -11,10 +11,12 @@ import java.net.SocketException;
  * @author Kyan
  *
  */
-public class Client
+public class Client implements NetworkInterface
 {
 	
 	private DatagramSocket socket;
+	private int port = 0;
+	private InetAddress serverIP = null;
 	
 	/**
 	 * Creates a client and attempts a UDP connection
@@ -27,8 +29,12 @@ public class Client
 	public Client(InetAddress host, int port) throws IOException
 	{
 		socket = new DatagramSocket();
-		byte[] data = new byte[64];
-		DatagramPacket packet = new DatagramPacket(data, 64, host, port);
+		serverIP = host;
+	}
+	
+	public void send(byte[] data) throws IOException
+	{
+		DatagramPacket packet = new DatagramPacket(data, data.length, serverIP, port);
 		socket.send(packet);
 	}
 }

@@ -26,17 +26,20 @@ import com.brackeen.javagamebook.tilegame.GameManager;
 
 import our.stuff.eventlisteners.StartButtonListener;
 import our.stuff.eventlisteners.BackButtonListener;
+import our.stuff.eventlisteners.ChatButtonListener;
 import our.stuff.eventlisteners.ConnectButtonListener;
 import our.stuff.eventlisteners.HostButtonListener;
 import our.stuff.eventlisteners.JoinButtonListener;
 import our.stuff.networking.Client;
 import our.stuff.networking.LobbyHostListener;
+import our.stuff.networking.PacketManager;
 import our.stuff.networking.Server;
 
 public class LobbyScreen extends JFrame
 {
 	
 	private Server server;
+	private Client client;
 	
 	private JButton hostButton;
 	private JButton joinButton;
@@ -150,6 +153,7 @@ public class LobbyScreen extends JFrame
 	{
 		chatBox.setEnabled(true);
 		sendButton.setEnabled(true);
+		sendButton.addActionListener(new ChatButtonListener(chatBox, server));
 		state = HOST;
 		buttonPanel.setVisible(false);
 		hostPanel = new JPanel(new BorderLayout(2, 2));
@@ -192,7 +196,7 @@ public class LobbyScreen extends JFrame
 		
 		screenContainer.add(hostPanel);
 		
-		server = new Server(25565, new LobbyHostListener(logText));
+		server = new Server(25565, new LobbyHostListener(logText, chatHistory));
 		server.start();
 		logText.append("\nServer started on port: " + server.getPort());
 	}
@@ -203,6 +207,7 @@ public class LobbyScreen extends JFrame
 	{
 		chatBox.setEnabled(true);
 		sendButton.setEnabled(true);
+		sendButton.addActionListener(new ChatButtonListener(chatBox, client));
 		state = JOIN;
 		buttonPanel.setVisible(false);
 		connectPanel = new JPanel();
@@ -224,7 +229,8 @@ public class LobbyScreen extends JFrame
 	{
 		try
 		{
-			Client client = new Client(InetAddress.getByName(ipBox.getText()), 25565);
+			client = new Client(InetAddress.getByName(ipBox.getText()), 25565);
+			client.send(PacketManager.genPacketData(PacketManager.TYPE_CONNECT));
 		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block

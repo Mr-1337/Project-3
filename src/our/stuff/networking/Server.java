@@ -12,7 +12,7 @@ import our.stuff.eventlisteners.NetworkListener;
  * The server that is responsible for maintaining the connections of all the connected game clients
  * @author Kyan
  */
-public class Server extends Thread
+public class Server extends Thread implements NetworkInterface
 {
 	private DatagramSocket socket;
 	
@@ -69,5 +69,12 @@ public class Server extends Thread
 	{
 		open = false;
 		socket.close();
+	}
+
+	@Override
+	public void send(byte[] data)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
