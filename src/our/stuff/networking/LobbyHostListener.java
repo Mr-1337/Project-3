@@ -8,14 +8,16 @@ import javax.swing.JTextArea;
 
 import our.stuff.eventlisteners.NetworkListener;
 
-public class LobbyHostListener extends NetworkListener
+public class LobbyHostListener implements NetworkListener
 {
 	
 	private JTextArea infoBox, chatBox;
+	private Server server;
 	
-	public LobbyHostListener(JTextArea textBox, JTextArea chatBox)
+	public LobbyHostListener(JTextArea textBox, JTextArea chatBox, Server server)
 	{
 		infoBox = textBox;
+		this.server = server;
 		this.chatBox = chatBox;
 	}
 	
@@ -36,6 +38,7 @@ public class LobbyHostListener extends NetworkListener
 			break;
 		case PacketManager.TYPE_CONNECT:
 			infoBox.append("\nConnection from " + packet.getAddress().getHostAddress());
+			server.addPlayer(packet.getAddress(), packet.getPort());
 			break;
 		case PacketManager.TYPE_CHAT:
 			String message = new String(Arrays.copyOfRange(data, 1, data.length)) + '\n';

@@ -7,21 +7,7 @@ import java.net.DatagramPacket;
  * @author Kyan
  *
  */
-public class NetworkListener
+public interface NetworkListener
 {
-	
-	/**
-	 * Constructs a new NetworkListener
-	 */
-	public NetworkListener()
-	{
-		
-	}
-	
-	public void callback(DatagramPacket packet)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
+	public void callback(DatagramPacket packet);
 }

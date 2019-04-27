@@ -2,6 +2,8 @@ package our.stuff.networking;
 
 import java.io.IOException;
 
+import our.stuff.eventlisteners.NetworkListener;
+
 public interface NetworkInterface
 {
 	/**
@@ -11,5 +13,6 @@ public interface NetworkInterface
 	 * @throws IOException 
 	 */
 	public void send(byte[] data) throws IOException;
+	public void setCallback(NetworkListener listener);
 	
 }

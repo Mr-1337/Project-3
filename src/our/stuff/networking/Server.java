@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.LinkedList;
 
 import our.stuff.eventlisteners.NetworkListener;
 
@@ -19,17 +20,29 @@ public class Server extends Thread implements NetworkInterface
 	private InetAddress address;
 	private final int port;
 	private boolean open = false;
-	private NetworkListener callback;
+	private NetworkListener listener;
+	
+	private LinkedList<PlayerNode> players = new LinkedList<PlayerNode>();
 	
 	public int getPort()
 	{
 		return port;
 	}
 	
-	public Server(int p, NetworkListener callback)
+	public void addPlayer(InetAddress ip, int playerPort)
+	{
+		PlayerNode player = new PlayerNode("player", ip, playerPort);
+		players.add(player);
+	}
+	
+	public void addPlayer(PlayerNode player)
+	{
+		players.add(player);
+	}
+	
+	public Server(int p)
 	{
 		super("Server Thread");
-		this.callback = callback;
 		port = p;
 		try
 		{
@@ -45,6 +58,12 @@ public class Server extends Thread implements NetworkInterface
 	}
 	
 	@Override
+	public void setCallback(NetworkListener listener)
+	{
+		this.listener = listener;
+	}
+	
+	@Override
 	public void run()
 	{
 		DatagramPacket p = new DatagramPacket(new byte[64], 64);
@@ -54,7 +73,7 @@ public class Server extends Thread implements NetworkInterface
 			{
 				p.setData(new byte[64]);
 				socket.receive(p);
-				callback.callback(p);
+				listener.callback(p);
 			}
 		} catch (IOException e)
 		{
@@ -76,5 +95,18 @@ public class Server extends Thread implements NetworkInterface
 	public void send(byte[] data)
 	{
 		System.out.println("Sending packet to clients");
+		for (PlayerNode n : players)
+		{
+			DatagramPacket p = new DatagramPacket(data, data.length);
+			p.setAddress(n.getIP());
+			p.setPort(n.getPort());
+			try
+			{
+				socket.send(p);
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 }

@@ -31,6 +31,7 @@ import our.stuff.eventlisteners.ConnectButtonListener;
 import our.stuff.eventlisteners.HostButtonListener;
 import our.stuff.eventlisteners.JoinButtonListener;
 import our.stuff.networking.Client;
+import our.stuff.networking.LobbyClientListener;
 import our.stuff.networking.LobbyHostListener;
 import our.stuff.networking.PacketManager;
 import our.stuff.networking.Server;
@@ -193,12 +194,14 @@ public class LobbyScreen extends JFrame
 		
 		screenContainer.add(hostPanel);
 		
-		server = new Server(25565, new LobbyHostListener(logText, chatHistory));
-		server.start();
+		server = new Server(25565);
+		server.setCallback(new LobbyHostListener(logText, chatHistory, server));
 		
 		chatBox.setEnabled(true);
 		sendButton.setEnabled(true);
 		sendButton.addActionListener(new ChatButtonListener(chatBox, chatHistory, server));
+		
+		server.start();
 		
 		logText.append("\nServer started on port: " + server.getPort());
 	}
@@ -229,6 +232,12 @@ public class LobbyScreen extends JFrame
 		try
 		{
 			client = new Client(InetAddress.getByName(ipBox.getText()), 25565);
+			
+			LobbyClientListener listener = new LobbyClientListener();
+			listener.setChatHistory(chatHistory);
+			client.setCallback(listener);
+			
+			client.start();
 			
 			chatBox.setEnabled(true);
 			sendButton.setEnabled(true);
