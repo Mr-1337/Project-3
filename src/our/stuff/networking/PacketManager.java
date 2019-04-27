@@ -15,8 +15,13 @@ public class PacketManager
 	
 	public static byte[] genPacketData(byte packetType, byte[] data)
 	{
-		data[0] = packetType;
-		return data;
+		byte[] finalData = new byte[data.length + 1];
+		finalData[0] = packetType;
+		for (int i = 0; i < data.length; i++)
+		{
+			finalData[i + 1] = data[i];
+		}
+		return finalData;
 	}
 	
 	public static byte[] genChatPacket(String message)
