@@ -49,11 +49,13 @@ public class LobbyScreen extends JFrame
 	private JPanel connectPanel;
 	private JPanel hostPanel;
 	private JPanel chatPanel;
+	private JPanel gameInfoPanel;
 	
 	private ImageIcon icon;
 	private JTextField ipBox;
 	private JTextField chatBox;
 	private JTextArea chatHistory;
+	private JLabel pingText;
 	
 	private NetworkManager networkManager = NetworkManager.GetInstance();
 	
@@ -81,10 +83,11 @@ public class LobbyScreen extends JFrame
 		chatBox.setEnabled(false);
 		
 		chatPanel = new JPanel(new BorderLayout());
-		//chatPanel.add(new JLabel("Chat"), BorderLayout.PAGE_START);
 		chatPanel.add(chatHistory, BorderLayout.NORTH);
 		chatPanel.add(chatBox, BorderLayout.CENTER);
 		chatPanel.add(sendButton, BorderLayout.SOUTH);
+		
+		pingText = new JLabel("Ping");
 		
 		screenContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		screenContainer.add(chatPanel);
@@ -116,6 +119,7 @@ public class LobbyScreen extends JFrame
 	private static final int DEFAULT = 0;
 	private static final int JOIN = 1;
 	private static final int HOST = 2;
+	private static final int CONNECTED = 3;
 	
 	/**
 	 * Method the back button will trigger.
@@ -137,6 +141,11 @@ public class LobbyScreen extends JFrame
 			screenContainer.remove(hostPanel);
 			buttonPanel.setVisible(true);
 			networkManager.getServer().close();
+			state = DEFAULT;
+			break;
+		case CONNECTED:
+			screenContainer.remove(gameInfoPanel);
+			buttonPanel.setVisible(true);
 			state = DEFAULT;
 			break;
 			
@@ -252,7 +261,16 @@ public class LobbyScreen extends JFrame
 	// We were successful in connecting, update the screen
 	public void joinLobby()
 	{
-		connectPanel.setVisible(false);
+		state = CONNECTED;
+		JButton backButton = new JButton("Disconnect");
+		backButton.addActionListener(new BackButtonListener(this));
+		gameInfoPanel = new JPanel(new GridLayout(5, 1));
+		gameInfoPanel.add(new JLabel("Game Info"));
+		gameInfoPanel.add(pingText);
+		gameInfoPanel.add(backButton);
+		screenContainer.add(gameInfoPanel);
+		screenContainer.remove(connectPanel);
+		this.validate();
 	}
 	
 	public void startGame(int mode)
