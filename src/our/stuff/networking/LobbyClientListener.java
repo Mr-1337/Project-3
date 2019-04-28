@@ -35,6 +35,8 @@ public class LobbyClientListener implements NetworkListener
 		case PacketManager.TYPE_ACCEPT:
 			screen.joinLobby();
 			break;
+		case PacketManager.TYPE_START:
+			break;
 		}
 		
 	}

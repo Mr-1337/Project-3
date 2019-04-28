@@ -37,7 +37,7 @@ public class LobbyHostListener implements NetworkListener
 		case PacketManager.TYPE_PING:
 			break;
 		case PacketManager.TYPE_CONNECT:
-			infoBox.append("\nConnection from " + packet.getAddress().getHostAddress());
+			infoBox.append("\nConnection from " + packet.getAddress().getHostAddress() + '\n');
 			String pName = "Player " + (server.getPlayers().size() + 1);
 			PlayerNode player = new PlayerNode(pName, packet.getAddress(), packet.getPort());
 			server.addPlayer(player);

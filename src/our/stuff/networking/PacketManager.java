@@ -8,6 +8,7 @@ public class PacketManager
 	public static final byte TYPE_ACCEPT = 2;
 	public static final byte TYPE_CHAT = 3;
 	public static final byte TYPE_DISCONNECT = 4;
+	public static final byte TYPE_START = 5;
 	
 	public static byte[] genPacketData(byte packetType)
 	{
