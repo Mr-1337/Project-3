@@ -8,7 +8,7 @@ public class NetworkManager
 {
 	
     // the other players
-    private LinkedList<PlayerNode> otherPlayer = new LinkedList<PlayerNode>();
+    private LinkedList<PlayerNode> otherPlayers = new LinkedList<PlayerNode>();
 	
 	private Server server;
 	private Client client;

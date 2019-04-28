@@ -29,13 +29,17 @@ public class ChatButtonListener implements ActionListener
 	public void actionPerformed(ActionEvent arg0)
 	{
 		// TODO Auto-generated method stub
-		String text = chat.getText();
-		if (!text.isEmpty())
-		{
-			NetworkManager.GetInstance().send(PacketManager.genChatPacket(text));
-			history.append(text + '\n');
-		}
-		chat.setText(null);	
+			String text = chat.getText();
+			if (NetworkManager.GetInstance().isServer())
+				text = "Server: " + text;
+			if (!text.isEmpty())
+			{
+				NetworkManager.GetInstance().send(PacketManager.genChatPacket(text));
+				if (NetworkManager.GetInstance().isServer())
+					history.append(text + '\n');
+			}
+			chat.setText(null);
+		
 	}
 
 }
