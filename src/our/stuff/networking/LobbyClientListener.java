@@ -11,6 +11,11 @@ public class LobbyClientListener implements NetworkListener
 {
 	
 	private JTextArea chatHistory;
+	
+	public LobbyClientListener(JTextArea chatHistory)
+	{
+		this.chatHistory = chatHistory;
+	}
 
 	@Override
 	public void callback(DatagramPacket packet)
@@ -26,10 +31,5 @@ public class LobbyClientListener implements NetworkListener
 			break;
 		}
 		
-	}
-
-	public void setChatHistory(JTextArea chatHistory)
-	{
-		this.chatHistory = chatHistory;
 	}
 }

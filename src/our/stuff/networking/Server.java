@@ -29,10 +29,26 @@ public class Server extends Thread implements NetworkInterface
 		return port;
 	}
 	
+	public PlayerNode getPlayerFromIp(InetAddress ip)
+	{
+		for (PlayerNode p : players)
+		{
+			if (p.getIP() == ip)
+				return p;
+		}
+		return null;
+	}
+	
 	public void addPlayer(InetAddress ip, int playerPort)
 	{
-		PlayerNode player = new PlayerNode("player", ip, playerPort);
+		String name = "Player " + (players.size() + 1);
+		PlayerNode player = new PlayerNode(name, ip, playerPort);
 		players.add(player);
+	}
+	
+	public LinkedList<PlayerNode> getPlayers()
+	{
+		return players;
 	}
 	
 	public void addPlayer(PlayerNode player)
@@ -91,6 +107,11 @@ public class Server extends Thread implements NetworkInterface
 		socket.close();
 	}
 
+	/**
+	 * Sends a packet to all players. Use for synchronization stuff;
+	 * @param data
+	 * The data to be sent
+	 */
 	@Override
 	public void send(byte[] data)
 	{
@@ -107,6 +128,27 @@ public class Server extends Thread implements NetworkInterface
 			{
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	/**
+	 * Sends a packet to a specific player.
+	 * @param data
+	 * The data to be sent
+	 * @param player
+	 * The player to send the data to
+	 */
+	public void sendToPlayer(byte[] data, PlayerNode player)
+	{
+		DatagramPacket p = new DatagramPacket(data, data.length);
+		p.setAddress(player.getIP());
+		p.setPort(player.getPort());
+		try
+		{
+			socket.send(p);
+		} catch (IOException e)
+		{
+			e.printStackTrace();
 		}
 	}
 }

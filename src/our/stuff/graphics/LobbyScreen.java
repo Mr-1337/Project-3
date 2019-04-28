@@ -33,15 +33,12 @@ import our.stuff.eventlisteners.JoinButtonListener;
 import our.stuff.networking.Client;
 import our.stuff.networking.LobbyClientListener;
 import our.stuff.networking.LobbyHostListener;
+import our.stuff.networking.NetworkManager;
 import our.stuff.networking.PacketManager;
 import our.stuff.networking.Server;
 
 public class LobbyScreen extends JFrame
-{
-	
-	private Server server;
-	private Client client;
-	
+{	
 	private JButton hostButton;
 	private JButton joinButton;
 	private JButton menuButton;
@@ -57,6 +54,8 @@ public class LobbyScreen extends JFrame
 	private JTextField ipBox;
 	private JTextField chatBox;
 	private JTextArea chatHistory;
+	
+	private NetworkManager networkManager = NetworkManager.GetInstance();
 	
 	public LobbyScreen()
 	{
@@ -137,7 +136,7 @@ public class LobbyScreen extends JFrame
 		case HOST:
 			screenContainer.remove(hostPanel);
 			buttonPanel.setVisible(true);
-			server.close();
+			networkManager.getServer().close();
 			state = DEFAULT;
 			break;
 			
@@ -185,7 +184,7 @@ public class LobbyScreen extends JFrame
 		blist.add(coop);
 		
 		JButton start = new JButton("Start Game");
-		start.addActionListener(new StartButtonListener(this));
+		start.addActionListener(new StartButtonListener(this, modes));
 		
 		blist.add(start);
 		blist.add(backButton);
@@ -194,16 +193,16 @@ public class LobbyScreen extends JFrame
 		
 		screenContainer.add(hostPanel);
 		
-		server = new Server(25565);
-		server.setCallback(new LobbyHostListener(logText, chatHistory, server));
+		networkManager.OpenServer(25565);
+		networkManager.getServer().setCallback(new LobbyHostListener(logText, chatHistory));
 		
 		chatBox.setEnabled(true);
 		sendButton.setEnabled(true);
-		sendButton.addActionListener(new ChatButtonListener(chatBox, chatHistory, server));
+		sendButton.addActionListener(new ChatButtonListener(chatBox, chatHistory));
 		
-		server.start();
+		networkManager.StartServer();
 		
-		logText.append("\nServer started on port: " + server.getPort());
+		logText.append("\nServer started on port: " + networkManager.getServer().getPort());
 	}
 	/**
 	 * Initiates logic for joining a lobby
@@ -231,25 +230,30 @@ public class LobbyScreen extends JFrame
 	{
 		try
 		{
-			client = new Client(InetAddress.getByName(ipBox.getText()), 25565);
+			networkManager.OpenClient(InetAddress.getByName(ipBox.getText()), 25565);
 			
-			LobbyClientListener listener = new LobbyClientListener();
-			listener.setChatHistory(chatHistory);
-			client.setCallback(listener);
-			
-			client.start();
+			LobbyClientListener listener = new LobbyClientListener(chatHistory);
+			networkManager.getClient().setCallback(listener);
+			networkManager.StartClient();
 			
 			chatBox.setEnabled(true);
 			sendButton.setEnabled(true);
-			sendButton.addActionListener(new ChatButtonListener(chatBox, chatHistory, client));
+			sendButton.addActionListener(new ChatButtonListener(chatBox, chatHistory));
 			
-			client.send(PacketManager.genPacketData(PacketManager.TYPE_CONNECT));
+			networkManager.send(PacketManager.genPacketData(PacketManager.TYPE_CONNECT));
 			
 		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void startGame(int mode)
+	{
+		GameManager.getGameManagerInstance().setMode(mode);
+		GameManager.getGameManagerInstance().setRunGame(true);
+		GameManager.getGameManagerInstance().setMultiScreen(false);
 	}
 	
 }

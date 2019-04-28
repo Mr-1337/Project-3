@@ -14,10 +14,10 @@ public class LobbyHostListener implements NetworkListener
 	private JTextArea infoBox, chatBox;
 	private Server server;
 	
-	public LobbyHostListener(JTextArea textBox, JTextArea chatBox, Server server)
+	public LobbyHostListener(JTextArea textBox, JTextArea chatBox)
 	{
 		infoBox = textBox;
-		this.server = server;
+		this.server = NetworkManager.GetInstance().getServer();
 		this.chatBox = chatBox;
 	}
 	
@@ -41,7 +41,8 @@ public class LobbyHostListener implements NetworkListener
 			server.addPlayer(packet.getAddress(), packet.getPort());
 			break;
 		case PacketManager.TYPE_CHAT:
-			String message = new String(Arrays.copyOfRange(data, 1, data.length)) + '\n';
+			String name = server.getPlayerFromIp(packet.getAddress()).getName();
+			String message = name + ": " + new String(Arrays.copyOfRange(data, 1, data.length)) + '\n';
 			chatBox.append(message);
 			break;
 		}

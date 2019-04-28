@@ -34,6 +34,8 @@ import com.brackeen.javagamebook.util.TimeSmoothie;
 import our.stuff.graphics.LobbyScreen;
 import our.stuff.graphics.Projectile;
 import our.stuff.graphics.RoundCount;
+import our.stuff.networking.NetworkManager;
+import our.stuff.networking.PlayerNode;
 
 /**
     GameManager manages all parts of the game.
@@ -127,10 +129,13 @@ public class GameManager extends GameCore {
     // the gamemode we will launch
     
     private static int mode = 0;
+    
     public void setMode(int m)
     {
     	mode = m;
     }
+    
+    private static NetworkManager networkManager = NetworkManager.GetInstance();
     
     public static final int MODE_NORMAL = 0;
     public static final int MODE_WAVE = 1;
