@@ -279,6 +279,14 @@ public class LobbyScreen extends JFrame
 		GameManager.getGameManagerInstance().setMode(mode);
 		GameManager.getGameManagerInstance().setRunGame(true);
 		GameManager.getGameManagerInstance().setMultiScreen(false);
+		networkManager.send(PacketManager.genPacketData(PacketManager.TYPE_START));
+	}
+	
+	public void startClientGame(int mode)
+	{
+		GameManager.getGameManagerInstance().setMode(mode);
+		GameManager.getGameManagerInstance().setRunGame(true);
+		GameManager.getGameManagerInstance().setMultiScreen(false);
 	}
 	
 }

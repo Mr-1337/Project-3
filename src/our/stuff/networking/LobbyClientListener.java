@@ -36,6 +36,8 @@ public class LobbyClientListener implements NetworkListener
 			screen.joinLobby();
 			break;
 		case PacketManager.TYPE_START:
+			byte mode = data[1];
+			screen.startClientGame(mode);
 			break;
 		}
 		
