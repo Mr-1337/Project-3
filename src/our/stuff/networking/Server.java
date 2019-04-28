@@ -146,6 +146,7 @@ public class Server extends Thread implements NetworkInterface
 		try
 		{
 			socket.send(p);
+			System.out.println("Sent packet to player " + player.getName());
 		} catch (IOException e)
 		{
 			e.printStackTrace();

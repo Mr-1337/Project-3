@@ -17,7 +17,7 @@ public class NetworkManager
 	
 	public boolean isServer()
 	{
-		return (current == server) && (current != null);
+		return (current instanceof Server);
 	}
 	
 	private NetworkManager()

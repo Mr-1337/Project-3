@@ -6,15 +6,18 @@ import java.util.Arrays;
 import javax.swing.JTextArea;
 
 import our.stuff.eventlisteners.NetworkListener;
+import our.stuff.graphics.LobbyScreen;
 
 public class LobbyClientListener implements NetworkListener
 {
 	
 	private JTextArea chatHistory;
+	private LobbyScreen screen;
 	
-	public LobbyClientListener(JTextArea chatHistory)
+	public LobbyClientListener(JTextArea chatHistory, LobbyScreen screen)
 	{
 		this.chatHistory = chatHistory;
+		this.screen = screen;
 	}
 
 	@Override
@@ -28,6 +31,9 @@ public class LobbyClientListener implements NetworkListener
 		case PacketManager.TYPE_CHAT:
 			String message = new String(Arrays.copyOfRange(data, 1, data.length)) + '\n';
 			chatHistory.append(message);
+			break;
+		case PacketManager.TYPE_ACCEPT:
+			screen.joinLobby();
 			break;
 		}
 		

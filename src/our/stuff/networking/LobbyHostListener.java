@@ -38,12 +38,16 @@ public class LobbyHostListener implements NetworkListener
 			break;
 		case PacketManager.TYPE_CONNECT:
 			infoBox.append("\nConnection from " + packet.getAddress().getHostAddress());
-			server.addPlayer(packet.getAddress(), packet.getPort());
+			String pName = "Player " + (server.getPlayers().size() + 1);
+			PlayerNode player = new PlayerNode(pName, packet.getAddress(), packet.getPort());
+			server.addPlayer(player);
+			server.sendToPlayer(PacketManager.genPacketData(PacketManager.TYPE_ACCEPT, new byte[15]), player);
 			break;
 		case PacketManager.TYPE_CHAT:
 			String name = server.getPlayerFromIp(packet.getAddress()).getName();
 			String message = name + ": " + new String(Arrays.copyOfRange(data, 1, data.length)) + '\n';
 			chatBox.append(message);
+			NetworkManager.GetInstance().send(PacketManager.genChatPacket(message));
 			break;
 		}
 	}

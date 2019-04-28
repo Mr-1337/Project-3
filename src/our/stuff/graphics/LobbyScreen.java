@@ -232,7 +232,7 @@ public class LobbyScreen extends JFrame
 		{
 			networkManager.OpenClient(InetAddress.getByName(ipBox.getText()), 25565);
 			
-			LobbyClientListener listener = new LobbyClientListener(chatHistory);
+			LobbyClientListener listener = new LobbyClientListener(chatHistory, this);
 			networkManager.getClient().setCallback(listener);
 			networkManager.StartClient();
 			
@@ -247,6 +247,12 @@ public class LobbyScreen extends JFrame
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	// We were successful in connecting, update the screen
+	public void joinLobby()
+	{
+		connectPanel.setVisible(false);
 	}
 	
 	public void startGame(int mode)
