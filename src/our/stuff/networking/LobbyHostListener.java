@@ -6,8 +6,6 @@ import java.util.Arrays;
 
 import javax.swing.JTextArea;
 
-import our.stuff.eventlisteners.NetworkListener;
-
 public class LobbyHostListener implements NetworkListener
 {
 	

@@ -47,11 +47,7 @@ public class GameManager extends GameCore {
     	
     	startMenu = new StartMenu();
     	lobbyScreen = new LobbyScreen();
-    	startMenu.setVisible(true);
-    	
-    	
-    	
-    
+    	startMenu.setVisible(true);	
     	while(!exitGame)
     	{
 	        try
@@ -76,7 +72,12 @@ public class GameManager extends GameCore {
 	        		gameManager.initWave();
 	        		gameManager.gameLoop();
 	        		break;
-	        			
+	        	case MODE_RACE:
+	        		break;
+	        	case MODE_COOP:
+	        		gameManager.initCoop();
+	        		gameManager.gameLoop();
+	        		break;
 	        	}
 	        	
 	        	runGame = false;
@@ -140,6 +141,7 @@ public class GameManager extends GameCore {
     public static final int MODE_NORMAL = 0;
     public static final int MODE_WAVE = 1;
     public static final int MODE_RACE = 2;
+    public static final int MODE_COOP = 3;
     
     private static GameManager gameManager = new GameManager();
     
@@ -306,6 +308,49 @@ public class GameManager extends GameCore {
         timeSmoothie = new TimeSmoothie();
         roundCount.increment();
     }
+    
+    public void initCoop() {
+        super.init();
+        
+        health=START_HEALTH;
+        // set up input manager
+        initInput();
+
+        // start resource manager
+      
+        resourceManager = new ResourceManager(
+        screen.getFullScreenWindow().getGraphicsConfiguration());
+
+        // load resources
+        renderer = new TileMapRenderer();
+        renderer.setBackground(
+            resourceManager.loadImage(resourceManager.levelBackground()));
+        // load first map
+        map = resourceManager.loadNextMap();
+
+        // load sounds
+        soundManager = new SoundManager(PLAYBACK_FORMAT);
+        starSound = soundManager.getSound("sounds/"+resourceManager.getStarSound());
+        boopSound = soundManager.getSound("sounds/"+resourceManager.getBoopSound());
+        noteSound = soundManager.getSound("sounds/"+resourceManager.getNoteSound());
+        warpSound = soundManager.getSound("sounds/"+resourceManager.getWarpSound());
+        endOfLevelSound = soundManager.getSound("sounds/"+resourceManager.getEndOfLevelSound());
+        dieSound = soundManager.getSound("sounds/"+resourceManager.getDieSound());
+        healthSound = soundManager.getSound("sounds/"+resourceManager.getHealthSound());
+        hurtSound = soundManager.getSound("sounds/"+resourceManager.getHurtSound());
+        
+        // start music
+        if(MUSIC_ON){
+        	midiPlayer = new MidiPlayer();
+        	sequence =
+        		midiPlayer.getSequence("sounds/"+resourceManager.levelMusic());
+        	midiPlayer.play(sequence, true);
+        	//toggleDrumPlayback();
+        }
+        
+        //Time smoothie
+        timeSmoothie = new TimeSmoothie();
+    }
 
     public void setRunGame(boolean value)
     {
@@ -440,193 +485,73 @@ public class GameManager extends GameCore {
     
     public boolean getSoundFXOn()
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return SOUND_ON;
     }
     
     public void setPlayerSpeedMultiplier(float speed)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	playerSpeedMultiplier = speed;
     }
     
     public float getPlayerSpeedMultiplier()
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return playerSpeedMultiplier;
     }
     
     public void setEnemySpeedMultiplier(float speed)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	Creature.enemySpeedMultiplier = speed;
     }
 
     public float getEnemySpeedMultiplier()
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return Creature.enemySpeedMultiplier;
     }
     
     public void setEnemyJumpSpeedMultiplier(float speed)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	Creature.enemyJumpSpeedMultiplier = speed;
     }
     
     public float getEnemyJumpSpeedMultiplier()
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return Creature.enemyJumpSpeedMultiplier;
     }
     
     public void setPlayerJumpSpeedMultiplier(float speed)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	Player.playerJumpSpeedMultiplier = speed;
     }
     
     public float getPlayerJumpSpeedMultiplier()
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return Player.playerJumpSpeedMultiplier;
     }
     
     public void setGravityMultiplier(float newGravityMultiplier)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	gravityMultiplier = newGravityMultiplier;
     }
     
     public float getGravityMultiplier()
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return gravityMultiplier;
     }
     
     public boolean getInvincible()
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return(INVINCIBLE);
     }
     public void setMaxHitClock(int x)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	MAX_HIT_CLOCK=x;
     }
     public int getInvulnerableTime()
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return(MAX_HIT_CLOCK);
     }
     public void setHealth(int x)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	if(x>=HEALTH_MAX)	//x exceeds maximum health, set health to max
     		health = HEALTH_MAX;
     	else if(x<=0)		//x is less than 0 (dead), set to 1
@@ -635,27 +560,11 @@ public class GameManager extends GameCore {
     }
     public int getHealth()
     {	//return the players current health
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return(health);
     }
     
     public void setMaxHealth(int x)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	if(x<0)		//x is too small
     		HEALTH_MAX=1;
     	else HEALTH_MAX=x;	
@@ -666,40 +575,16 @@ public class GameManager extends GameCore {
     
     public int getMaxHealth()
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return (HEALTH_MAX);
     }
     
     public ResourceManager getResourceManagerInstance()
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return(resourceManager);
     }
     
     public void toggleMusic()
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	if(MUSIC_ON)	//the music is on, shut it off
     	{
     		midiPlayer.close();
@@ -716,14 +601,6 @@ public class GameManager extends GameCore {
     
     public void toggleInvincibility()
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	INVINCIBLE = !INVINCIBLE;
     }
     
@@ -793,8 +670,6 @@ public class GameManager extends GameCore {
             }
             if (jump.isPressed()) {
                 player.jump(false);
-                if (mode == MODE_WAVE)
-                	roundCount.increment();
             }
             player.setVelocityX(velocityX);
         }
@@ -989,39 +864,45 @@ public class GameManager extends GameCore {
     	
         Creature player = (Creature)map.getPlayer();
         Graphics2D g = screen.getGraphics();
-
-        if(player.getY()>screen.getHeight()+player.getHeight()) 
-        {//if the player falls out of the bottom of the screen, kill them
-                player.setState(Creature.STATE_DEAD);
-                midiPlayer.stop();
-                soundManager.play(dieSound);
-                this.baseScoreMultiplier=1.0f;
-        		scoreBoard.setMultiplier(this.baseScoreMultiplier);
-        		
-        		totalElapsedTime = 0;
-        		
-        		//reset Star total
-        		scoreBoard.setStarTotal(0);
-            	try{
-                	Thread.sleep(750);	
-                }catch(Exception io){};
-                hitClock=0;
-        }                    
+        
+        if (networkManager.getCurrent() == null)
+        {
+	        if(player.getY()>screen.getHeight()+player.getHeight()) 
+	        {//if the player falls out of the bottom of the screen, kill them
+	                player.setState(Creature.STATE_DEAD);
+	                midiPlayer.stop();
+	                soundManager.play(dieSound);
+	                this.baseScoreMultiplier=1.0f;
+	        		scoreBoard.setMultiplier(this.baseScoreMultiplier);
+	        		
+	        		totalElapsedTime = 0;
+	        		
+	        		//reset Star total
+	        		scoreBoard.setStarTotal(0);
+	            	try{
+	                	Thread.sleep(750);	
+	                }catch(Exception io){};
+	                hitClock=0;
+	        } 
+        }
         
 
         // player is dead! start map over
-        if (player.getState() == Creature.STATE_DEAD) {
-        	health=START_HEALTH;
-        	map = resourceManager.reloadMap();
-            try{
-            	Thread.sleep(LEVEL_SWITCH_PAUSE+300);	//give a little time before reloading the map
-            }catch(Exception io){};
-            if(MUSIC_ON){
-            	midiPlayer.stop();
-            	midiPlayer.play(sequence, true);
-            }
-            
-            return;
+        if (networkManager.getCurrent() == null)
+        {
+	        if (player.getState() == Creature.STATE_DEAD) {
+	        	health=START_HEALTH;
+	        	map = resourceManager.reloadMap();
+	            try{
+	            	Thread.sleep(LEVEL_SWITCH_PAUSE+300);	//give a little time before reloading the map
+	            }catch(Exception io){};
+	            if(MUSIC_ON){
+	            	midiPlayer.stop();
+	            	midiPlayer.play(sequence, true);
+	            }
+	            
+	            return;
+	        }
         }
 
         // get keyboard/mouse input

@@ -31,6 +31,7 @@ import our.stuff.eventlisteners.ConnectButtonListener;
 import our.stuff.eventlisteners.HostButtonListener;
 import our.stuff.eventlisteners.JoinButtonListener;
 import our.stuff.networking.Client;
+import our.stuff.networking.ClientGameListener;
 import our.stuff.networking.LobbyClientListener;
 import our.stuff.networking.LobbyHostListener;
 import our.stuff.networking.NetworkManager;
@@ -274,16 +275,19 @@ public class LobbyScreen extends JFrame
 		this.validate();
 	}
 	
-	public void startGame(int mode)
+	public void startGame(byte mode)
 	{
 		GameManager.getGameManagerInstance().setMode(mode);
 		GameManager.getGameManagerInstance().setRunGame(true);
 		GameManager.getGameManagerInstance().setMultiScreen(false);
-		networkManager.send(PacketManager.genPacketData(PacketManager.TYPE_START));
+		byte[] modeData = new byte[4];
+		modeData[0] = mode;
+		networkManager.send(PacketManager.genPacketData(PacketManager.TYPE_START, modeData));
 	}
 	
 	public void startClientGame(int mode)
 	{
+		networkManager.getClient().setCallback(new ClientGameListener());
 		GameManager.getGameManagerInstance().setMode(mode);
 		GameManager.getGameManagerInstance().setRunGame(true);
 		GameManager.getGameManagerInstance().setMultiScreen(false);

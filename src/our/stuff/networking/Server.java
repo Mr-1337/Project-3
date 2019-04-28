@@ -7,8 +7,6 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.LinkedList;
 
-import our.stuff.eventlisteners.NetworkListener;
-
 /**
  * The server that is responsible for maintaining the connections of all the connected game clients
  * @author Kyan

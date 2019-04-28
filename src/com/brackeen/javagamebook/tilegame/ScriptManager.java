@@ -273,14 +273,7 @@ public class ScriptManager
 	
 	 public String getMap(int level) throws IOException
 	 {
-	    	if(CodeReflection.isTracing() && InputPackageTracingEnabled.getInputPackageTracingEnabledInstance().isEnabled()) {
-	        	if(CodeReflection.getAbstactionLevel()>=0)
-	        	{//check to make sure it's this level of abstraction
-	        		e.fillInStackTrace();		
-	        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-	        								e.getStackTrace()[0].getMethodName());
-	        	}
-	    	}
+
 	 	//Given a level number, this function will find the textfile
 	 	//name of the level map and return it; Default level1.txt
 
@@ -291,86 +284,33 @@ public class ScriptManager
 	 }
 	 public String getArchType(int x)
 	 {  //returns the specified ArchType of enemy x
-	    	if(CodeReflection.isTracing() && InputPackageTracingEnabled.getInputPackageTracingEnabledInstance().isEnabled()) {
-	        	if(CodeReflection.getAbstactionLevel()>=0)
-	        	{//check to make sure it's this level of abstraction
-	        		e.fillInStackTrace();		
-	        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-	        								e.getStackTrace()[0].getMethodName());
-	        	}
-	    	}
+
 	 	return (archType[x]);
 	 }
 	 public int getNumberOfEnemies()
 	 {  //returns the number of enemies
-	    	if(CodeReflection.isTracing() && InputPackageTracingEnabled.getInputPackageTracingEnabledInstance().isEnabled()) {
-	        	if(CodeReflection.getAbstactionLevel()>=3)
-	        	{//check to make sure it's this level of abstraction
-	        		e.fillInStackTrace();		
-	        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-	        								e.getStackTrace()[0].getMethodName());
-	        	}
-	    	}
+
 	 	return (enemies);
 	 }
 	 public String getSpriteImage(int x)
 	 {  //returns the sprite image filename of x
-	    	if(CodeReflection.isTracing() && InputPackageTracingEnabled.getInputPackageTracingEnabledInstance().isEnabled()) {
-	        	if(CodeReflection.getAbstactionLevel()>=0)
-	        	{//check to make sure it's this level of abstraction
-	        		e.fillInStackTrace();		
-	        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-	        								e.getStackTrace()[0].getMethodName());
-	        	}
-	    	}
+
 	 	return (listOfImages[x]);
 	 }
 	 public int getNumberOfSprites()
 	 {  //returns the number of sprite images
-	    	if(CodeReflection.isTracing() && InputPackageTracingEnabled.getInputPackageTracingEnabledInstance().isEnabled()) {
-	        	if(CodeReflection.getAbstactionLevel()>=0)
-	        	{//check to make sure it's this level of abstraction
-	        		e.fillInStackTrace();		
-	        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-	        								e.getStackTrace()[0].getMethodName());
-	        	}
-	    	}
 	 	return (sprites);
 	 }
 	 public String getLevelImage(int level)
 	 {
-	    	if(CodeReflection.isTracing() && InputPackageTracingEnabled.getInputPackageTracingEnabledInstance().isEnabled()) {
-	        	if(CodeReflection.getAbstactionLevel()>=0)
-	        	{//check to make sure it's this level of abstraction
-	        		e.fillInStackTrace();		
-	        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-	        								e.getStackTrace()[0].getMethodName());
-	        	}
-	    	}
 	 	return(levelImages[level-1]);
 	 }
 	 public String getlevelMusic(int level)
 	 {
-	    	if(CodeReflection.isTracing() && InputPackageTracingEnabled.getInputPackageTracingEnabledInstance().isEnabled()) {
-	        	if(CodeReflection.getAbstactionLevel()>=0)
-	        	{//check to make sure it's this level of abstraction
-	        		e.fillInStackTrace();		
-	        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-	        								e.getStackTrace()[0].getMethodName());
-	        	}
-	    	}
 	 	return(levelMusic[level-1]);
 	 }
 	 public String getSoundByReference(String x)
 	 {
-	    	if(CodeReflection.isTracing() && InputPackageTracingEnabled.getInputPackageTracingEnabledInstance().isEnabled()) {
-	        	if(CodeReflection.getAbstactionLevel()>=0)
-	        	{//check to make sure it's this level of abstraction
-	        		e.fillInStackTrace();		
-	        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-	        								e.getStackTrace()[0].getMethodName());
-	        	}
-	    	}
 	 	for(int z=0; z<soundArrayLength; z++)
 	 	{
 	 		if(x.compareTo(itemSounds[z][0])==0)
@@ -380,14 +320,6 @@ public class ScriptManager
 	 }
 	 public String getItemImage(String name, int number)
 	 {	//get the type of image it is, and return the name of the image based on which one (number)
-	    	if(CodeReflection.isTracing() && InputPackageTracingEnabled.getInputPackageTracingEnabledInstance().isEnabled()) {
-	        	if(CodeReflection.getAbstactionLevel()>=0)
-	        	{//check to make sure it's this level of abstraction
-	        		e.fillInStackTrace();		
-	        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-	        								e.getStackTrace()[0].getMethodName());
-	        	}
-	    	}
 	 	if(name.compareTo("coin")==0)
 	 		return(coinImages[number-1]);
 	 	if(name.compareTo("note")==0)

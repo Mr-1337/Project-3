@@ -6,8 +6,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-import our.stuff.eventlisteners.NetworkListener;
-
 /**
  * Represents a game client on the network
  * @author Kyan

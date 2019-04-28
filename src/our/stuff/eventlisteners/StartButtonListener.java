@@ -27,7 +27,7 @@ public class StartButtonListener implements ActionListener
 	public void actionPerformed(ActionEvent arg0)
 	{
 		// TODO Auto-generated method stub
-		int mode = 0;
+		byte mode = 0;
 		Enumeration<AbstractButton> elements = buttons.getElements();
 		while (elements.hasMoreElements())
 		{
@@ -41,6 +41,9 @@ public class StartButtonListener implements ActionListener
 					break;
 				case "Race":
 					mode = GameManager.MODE_RACE;
+					break;
+				case "Co-Op":
+					mode = GameManager.MODE_COOP;
 					break;
 				}
 			}

@@ -1,4 +1,4 @@
-package our.stuff.eventlisteners;
+package our.stuff.networking;
 
 import java.net.DatagramPacket;
 

@@ -1,5 +1,7 @@
 package our.stuff.networking;
 
+import com.brackeen.javagamebook.tilegame.sprites.Creature;
+
 public class PacketManager
 {
 	
@@ -9,6 +11,8 @@ public class PacketManager
 	public static final byte TYPE_CHAT = 3;
 	public static final byte TYPE_DISCONNECT = 4;
 	public static final byte TYPE_START = 5;
+	public static final byte TYPE_SPAWN = 6;
+	public static final byte TYPE_PLAYERPOS = 7;
 	
 	public static byte[] genPacketData(byte packetType)
 	{
@@ -30,6 +34,13 @@ public class PacketManager
 	{
 		byte[] txtBytes = message.getBytes();
 		return genPacketData(TYPE_CHAT, txtBytes);
+	}
+	
+	public static byte[] genEnemySpawnPacket(Creature enemy)
+	{
+		String name = enemy.getClass().getSimpleName();
+		byte[] enemyBytes = name.getBytes();
+		return genPacketData(TYPE_SPAWN, enemyBytes);
 	}
 	
 }

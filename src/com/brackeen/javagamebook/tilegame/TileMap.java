@@ -5,6 +5,12 @@ import java.util.LinkedList;
 import java.util.Iterator;
 
 import com.brackeen.javagamebook.graphics.Sprite;
+import com.brackeen.javagamebook.tilegame.sprites.Creature;
+
+import our.stuff.networking.NetworkManager;
+import our.stuff.networking.PacketManager;
+import our.stuff.networking.Server;
+
 import com.brackeen.javagamebook.codereflection.*;
 
 /**
@@ -19,20 +25,13 @@ public class TileMap {
     private LinkedList sprites;
     private Sprite player;
     private Throwable e = new Throwable();
+    private NetworkManager network = NetworkManager.GetInstance();
 
     /**
         Creates a new TileMap with the specified width and
         height (in number of tiles) of the map.
     */
     public TileMap(int width, int height) {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=1)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         tiles = new Image[width][height];
         sprites = new LinkedList();
     }
@@ -42,14 +41,6 @@ public class TileMap {
         Gets the width of this TileMap (number of tiles across).
     */
     public int getWidth() {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=5)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         return tiles.length;
     }
 
@@ -58,14 +49,6 @@ public class TileMap {
         Gets the height of this TileMap (number of tiles down).
     */
     public int getHeight() {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=5)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         return tiles[0].length;
     }
 
@@ -76,14 +59,6 @@ public class TileMap {
         bounds.
     */
     public Image getTile(int x, int y) {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=5)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         if (x < 0 || x >= getWidth() ||
             y < 0 || y >= getHeight())
         {
@@ -99,14 +74,6 @@ public class TileMap {
         Sets the tile at the specified location.
     */
     public void setTile(int x, int y, Image tile) {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=3)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         tiles[x][y] = tile;
     }
 
@@ -115,14 +82,6 @@ public class TileMap {
         Gets the player Sprite.
     */
     public Sprite getPlayer() {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=4)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         return player;
     }
 
@@ -131,14 +90,6 @@ public class TileMap {
         Sets the player Sprite.
     */
     public void setPlayer(Sprite player) {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         this.player = player;
     }
 
@@ -147,15 +98,19 @@ public class TileMap {
         Adds a Sprite object to this map.
     */
     public void addSprite(Sprite sprite) {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=3)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
+    	if (network.getCurrent() instanceof Server)
+    	{
+    		sprites.add(sprite);
+    		//Alert all the game clients about this sprite's creation		
+    		if (sprite instanceof Creature)
+    		{
+    			network.send(PacketManager.genEnemySpawnPacket((Creature)sprite));
+    		}
     	}
-        sprites.add(sprite);
+    	else if (network.getCurrent() == null)
+    	{
+    		sprites.add(sprite);
+    	}
     }
 
 
@@ -163,14 +118,6 @@ public class TileMap {
         Removes a Sprite object from this map.
     */
     public void removeSprite(Sprite sprite) {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         sprites.remove(sprite);
     }
 
@@ -180,14 +127,6 @@ public class TileMap {
         excluding the player Sprite.
     */
     public Iterator getSprites() {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=3)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         return sprites.iterator();
     }
 

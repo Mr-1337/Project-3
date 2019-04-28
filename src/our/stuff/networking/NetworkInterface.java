@@ -2,8 +2,6 @@ package our.stuff.networking;
 
 import java.io.IOException;
 
-import our.stuff.eventlisteners.NetworkListener;
-
 public interface NetworkInterface
 {
 	/**
