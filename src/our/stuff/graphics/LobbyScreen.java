@@ -146,6 +146,7 @@ public class LobbyScreen extends JFrame
 		case CONNECTED:
 			screenContainer.remove(gameInfoPanel);
 			buttonPanel.setVisible(true);
+			networkManager.send(PacketManager.genPacketData(PacketManager.TYPE_DISCONNECT));
 			state = DEFAULT;
 			break;
 			

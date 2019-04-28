@@ -49,6 +49,11 @@ public class LobbyHostListener implements NetworkListener
 			chatBox.append(message);
 			NetworkManager.GetInstance().send(PacketManager.genChatPacket(message));
 			break;
+		case PacketManager.TYPE_DISCONNECT:
+			PlayerNode dcPlayer = server.getPlayerFromIp(packet.getAddress());
+			infoBox.append(dcPlayer.getName() + " disconnected.");
+			server.getPlayers().remove(dcPlayer);
+			break;
 		}
 	}
 }
