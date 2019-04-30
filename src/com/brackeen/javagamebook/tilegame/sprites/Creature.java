@@ -2,6 +2,10 @@ package com.brackeen.javagamebook.tilegame.sprites;
 
 import java.lang.reflect.Constructor;
 import com.brackeen.javagamebook.graphics.*;
+
+import our.stuff.networking.NetworkManager;
+import our.stuff.networking.PacketManager;
+
 import com.brackeen.javagamebook.codereflection.*;
 
 /**
@@ -236,6 +240,11 @@ public boolean isIntelligent() {
         }
         //update total time
         totalElapsedTime += elapsedTime;
+        
+        if (NetworkManager.GetInstance().isServer())
+        {
+        	NetworkManager.GetInstance().send(PacketManager.genCreaturePosPacket(this));
+        }
      
     }
     

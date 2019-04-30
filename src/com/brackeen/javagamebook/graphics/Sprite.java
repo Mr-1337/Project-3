@@ -4,6 +4,8 @@ import java.awt.Image;
 
 import com.brackeen.javagamebook.codereflection.*;
 
+import our.stuff.networking.NetworkManager;
+
 public class Sprite {
 
     protected Animation anim;

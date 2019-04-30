@@ -42,7 +42,7 @@ public class StartButtonListener implements ActionListener
 				case "Race":
 					mode = GameManager.MODE_RACE;
 					break;
-				case "Co-Op":
+				case "Co-op":
 					mode = GameManager.MODE_COOP;
 					break;
 				}

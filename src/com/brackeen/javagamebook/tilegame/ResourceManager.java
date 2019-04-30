@@ -35,6 +35,9 @@ public class ResourceManager {
     private Sprite warpSprite;
     private Sprite healthSprite;
     
+    public Sprite bee;
+    public Sprite bear;
+    
     private Sprite[] enemySprites;
     private ScriptManager s;
     private Throwable e = new Throwable();
@@ -454,10 +457,12 @@ public class ResourceManager {
             else
         	if(s.getArchType(x).compareTo("bee")==0) {
             	enemySprites[x]=new Bee(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            	bee = enemySprites[x];
             }
         	else
         	if(s.getArchType(x).compareTo("bear")==0) {
             	enemySprites[x]=new Bear(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            	bear = enemySprites[x];
             }
         	else
         	if(s.getArchType(x).compareTo("raccoon")==0) {

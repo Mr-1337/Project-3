@@ -14,7 +14,7 @@ public class PacketManager
 	public static final byte TYPE_DISCONNECT = 4;
 	public static final byte TYPE_START = 5;
 	public static final byte TYPE_SPAWN = 6;
-	public static final byte TYPE_PLAYERPOS = 7;
+	public static final byte TYPE_CREATUREPOS = 7;
 	
 	public static byte[] genPacketData(byte packetType)
 	{
@@ -51,6 +51,20 @@ public class PacketManager
 		bb.putInt(bb.capacity() - 4, id);
 		
 		return genPacketData(TYPE_SPAWN, bb.array());
+	}
+	
+	public static byte[] genCreaturePosPacket(Creature creature)
+	{
+		int id = creature.getID();
+		float x = creature.getX();
+		float y = creature.getY();
+		
+		ByteBuffer billyBones = ByteBuffer.allocate(12);
+		billyBones.putInt(id);
+		billyBones.putFloat(x);
+		billyBones.putFloat(y);
+		
+		return genPacketData(TYPE_CREATUREPOS, billyBones.array());
 	}
 	
 }

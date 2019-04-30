@@ -22,6 +22,7 @@ import com.brackeen.javagamebook.codereflection.*;
 */
 public class TileMap {
 
+	private static int entID = 0;
     private Image[][] tiles;
     private LinkedList sprites;
     private Sprite player;
@@ -92,6 +93,9 @@ public class TileMap {
     */
     public void setPlayer(Sprite player) {
         this.player = player;
+        ((Creature)player).setID(55);
+        if (NetworkManager.GetInstance().getCurrent() != null)
+        	network.send(PacketManager.genEnemySpawnPacket((Creature)player));
     }
 
 
@@ -105,6 +109,8 @@ public class TileMap {
     		//Alert all the game clients about this sprite's creation		
     		if (sprite instanceof Creature)
     		{
+    			((Creature) sprite).setID(entID);
+    			entID++;
     			network.send(PacketManager.genEnemySpawnPacket((Creature)sprite));
     		}
     	}

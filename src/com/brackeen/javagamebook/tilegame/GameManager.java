@@ -28,6 +28,8 @@ import com.brackeen.javagamebook.sound.Sound;
 import com.brackeen.javagamebook.sound.SoundManager;
 import com.brackeen.javagamebook.test.GameCore;
 import com.brackeen.javagamebook.test.ScoreBoard;
+import com.brackeen.javagamebook.tilegame.sprites.Bear;
+import com.brackeen.javagamebook.tilegame.sprites.Bee;
 import com.brackeen.javagamebook.tilegame.sprites.Boss;
 import com.brackeen.javagamebook.tilegame.sprites.Creature;
 import com.brackeen.javagamebook.tilegame.sprites.Player;
@@ -792,7 +794,7 @@ public class GameManager extends GameCore {
 			case PacketManager.TYPE_SPAWN:
  				String name = new String(Arrays.copyOfRange(data, 1, data.length));
  				name = name.substring(0, name.indexOf("END"));
- 				int entID = bb.getInt(name.length());
+ 				int entID = bb.getInt(name.length()+4);
  				System.out.println(name);
 				switch (name)
 				{
@@ -802,8 +804,14 @@ public class GameManager extends GameCore {
 					System.out.println("BALLOON");
 					break;
 				case "Bear":
+					Bear be = (Bear) resourceManager.bear.clone();
+					be.setID(entID);
+					queueSprite(be);
 					break;
 				case "Bee":
+					Bee b = (Bee) resourceManager.bee.clone();
+					b.setID(entID);
+					queueSprite(b);
 					break;
 				case "Boss":
 					break;
@@ -822,8 +830,9 @@ public class GameManager extends GameCore {
 				case "Player":
 					System.out.println("i have a clone, and he's coming to kill me");
 					Player p = (Player) resourceManager.playerSprite.clone();
-					p.setX(500);
-					p.setY(400);
+					p.setX(100);
+					p.setY(250);
+					p.setID(entID);
 					queueSprite(p);
 					break;
 				case "Raccoon":
@@ -843,7 +852,27 @@ public class GameManager extends GameCore {
 					break;
 				}
 				break;
-			case PacketManager.TYPE_PLAYERPOS:
+			case PacketManager.TYPE_CREATUREPOS:
+				
+				int entID2 = bb.getInt(1);
+				float x = bb.getFloat(5);
+				float y = bb.getFloat(9);
+				System.out.println(x);
+				System.out.println(y);
+				Iterator iter = map.getSprites();
+				while (iter.hasNext())
+				{
+					Sprite s = (Sprite) iter.next();
+					if (s instanceof Creature)
+					{
+						if (((Creature)s).getID() == entID2)
+						{
+							s.setX(x);
+							s.setY(y);
+							break;
+						}
+					}
+				}
 				break;
 			}
     	}
@@ -927,6 +956,9 @@ public class GameManager extends GameCore {
         	}
         	break;
         case MODE_RACE:
+        	break;
+        case MODE_COOP:
+        	networkManager.send(PacketManager.genCreaturePosPacket(player));
         	break;
         }
 
