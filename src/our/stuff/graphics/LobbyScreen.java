@@ -283,6 +283,13 @@ public class LobbyScreen extends JFrame
 		byte[] modeData = new byte[4];
 		modeData[0] = mode;
 		networkManager.send(PacketManager.genPacketData(PacketManager.TYPE_START, modeData));
+		try
+		{
+			Thread.sleep(1000);
+		} catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void startClientGame(int mode)

@@ -5,6 +5,9 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.concurrent.Semaphore;
+
+import com.brackeen.javagamebook.tilegame.GameManager;
 
 /**
  * Represents a game client on the network
@@ -19,6 +22,7 @@ public class Client extends Thread implements NetworkInterface
 	private InetAddress serverIP = null;
 	private boolean open = false;
 	private NetworkListener listener;
+	private GameManager gm = GameManager.getGameManagerInstance();
 	
 	/**
 	 * Creates a client and attempts a UDP connection
@@ -51,14 +55,26 @@ public class Client extends Thread implements NetworkInterface
 	@Override
 	public void run()
 	{
-		DatagramPacket p = new DatagramPacket(new byte[64], 64);
+		Semaphore semmy = gm.getSemmy();
+
+		DatagramPacket p = new DatagramPacket(new byte[256], 256);
 		try
 		{
 			while(open)
 			{
-				p.setData(new byte[64]);
+				try
+				{
+					semmy.acquire();
+				} catch (InterruptedException e1)
+				{
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				p.setData(new byte[256]);
 				socket.receive(p);
-				listener.callback(p);
+				DatagramPacket p2 = new DatagramPacket(p.getData(), p.getLength());
+				listener.callback(p2);
+				semmy.release();
 			}
 		} catch (IOException e)
 		{

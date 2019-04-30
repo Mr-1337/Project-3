@@ -474,14 +474,6 @@ public class ResourceManager {
     
     public String levelMusic()
     {	//return the music name for the current map
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	if(currentMap==-1) //first instance load
     		return(s.getlevelMusic(1));
     	return(s.getlevelMusic(currentMap));
@@ -489,144 +481,56 @@ public class ResourceManager {
     
     public int getLevel()
     {	//return the current level the player is on
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=4)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return(currentMap);
     }
     
     public String getBoopSound()
     {	//return the sound for jumping on an enemy
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return(s.getSoundByReference("boop"));
     }
     
     public String getStarSound()
     {	//return the sound for the star
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return(s.getSoundByReference("star"));
     }
     
     public String getNoteSound()
     {	//return the sound for the note
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return(s.getSoundByReference("note"));
     }
     
     public String getWarpSound()
     {	//return the sound for the warp
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return(s.getSoundByReference("warp"));
     }
     
     public String getEndOfLevelSound()
     {	//return the sound for the warp
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return(s.getSoundByReference("endoflevel"));
     }
     
     public String getDieSound()
     {	//return the sound for the player dying
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return(s.getSoundByReference("die"));
     }
     
     public String getHealthSound()
     {	//return the sound for receiving a health powerup
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return(s.getSoundByReference("health"));
     }
     
     public String getHurtSound()
     {	//return the sound for receiving damage, but not dying
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return(s.getSoundByReference("hurt"));
     }
     
     public String getRoundSound()
     {	//return the sound for receiving damage, but not dying
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return(s.getSoundByReference("round"));
     }
     
     public ScriptManager getScriptClass()
     {	//return your instance of s
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=4)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return(s);
     }
     
@@ -634,14 +538,6 @@ public class ResourceManager {
     private Animation createPlayerAnim(Image player1,
         Image player2, Image player3)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         Animation anim = new Animation();
         anim.addFrame(player1, 250);
         anim.addFrame(player2, 150);
@@ -656,14 +552,6 @@ public class ResourceManager {
     private Animation createFlyAnim(Image img1, Image img2,
         Image img3)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         Animation anim = new Animation();
         anim.addFrame(img1, 50);
         anim.addFrame(img2, 50);
@@ -674,14 +562,6 @@ public class ResourceManager {
 
 
     private Animation createGrubAnim(Image img1, Image img2) {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         Animation anim = new Animation();
         anim.addFrame(img1, 250);
         anim.addFrame(img2, 250);
@@ -691,60 +571,36 @@ public class ResourceManager {
     //TODO Create animation sequence for creature
     private Animation createMonkeyAnim(Image img1, Image img2,
             Image img3)
-        {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
-            Animation anim = new Animation();
-            //Normal state
-            anim.addFrame(img1, 50);
-            //Up anim state
-            anim.addFrame(img2, 50);
-            //Normal state
-            anim.addFrame(img1, 50);
-            //down anim state
-            anim.addFrame(img3, 50);
-            return anim;
-        }
+    {
+        Animation anim = new Animation();
+        //Normal state
+        anim.addFrame(img1, 50);
+        //Up anim state
+        anim.addFrame(img2, 50);
+        //Normal state
+        anim.addFrame(img1, 50);
+        //down anim state
+        anim.addFrame(img3, 50);
+        return anim;
+    }
     
     private Animation createBossAnim(Image img1, Image img2,
             Image img3)
-        {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
-            Animation anim = new Animation();
-            //Normal state
-            anim.addFrame(img1, 50);
-            //Up anim state
-            anim.addFrame(img2, 50);
-            //Normal state
-            anim.addFrame(img1, 50);
-            //down anim state
-            anim.addFrame(img3, 50);
-         
-            return anim;
-        }
+    {
+        Animation anim = new Animation();
+        //Normal state
+        anim.addFrame(img1, 50);
+        //Up anim state
+        anim.addFrame(img2, 50);
+        //Normal state
+        anim.addFrame(img1, 50);
+        //down anim state
+        anim.addFrame(img3, 50);
+     
+        return anim;
+    }
     
     private void loadPowerUpSprites() {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         // create "goal" sprite
         Animation anim = new Animation();
         anim.addFrame(loadImage(s.getItemImage("eol",1)), 150);
@@ -788,27 +644,11 @@ public class ResourceManager {
     }
 	 public void setLevelMappingFile(String scriptFile)
 	 {	//This tells what script file to use for level loading
-	    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-	        	if(CodeReflection.getAbstactionLevel()>=0)
-	        	{//check to make sure it's this level of abstraction
-	        		e.fillInStackTrace();		
-	        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-	        								e.getStackTrace()[0].getMethodName());
-	        	}
-	    	}
 	 	s.setLevelMappingFile(scriptFile);
 	 }
 	 
 	 public String getLevelMappingFile()
 	 {	//Tell what script file is being used to load levels
-	    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-	        	if(CodeReflection.getAbstactionLevel()>=0)
-	        	{//check to make sure it's this level of abstraction
-	        		e.fillInStackTrace();		
-	        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-	        								e.getStackTrace()[0].getMethodName());
-	        	}
-	    	}
 	 	return(s.getLevelMappingFile());
 	 }
 

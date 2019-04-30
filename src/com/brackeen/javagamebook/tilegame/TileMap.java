@@ -7,6 +7,7 @@ import java.util.Iterator;
 import com.brackeen.javagamebook.graphics.Sprite;
 import com.brackeen.javagamebook.tilegame.sprites.Creature;
 
+import our.stuff.networking.Client;
 import our.stuff.networking.NetworkManager;
 import our.stuff.networking.PacketManager;
 import our.stuff.networking.Server;
@@ -106,6 +107,10 @@ public class TileMap {
     		{
     			network.send(PacketManager.genEnemySpawnPacket((Creature)sprite));
     		}
+    	}
+    	else if (network.getCurrent() instanceof Client)
+    	{
+    		sprites.add(sprite);
     	}
     	else if (network.getCurrent() == null)
     	{

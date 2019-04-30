@@ -4,9 +4,13 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.net.DatagramPacket;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Semaphore;
 
 import javax.sound.midi.Sequence;
 import javax.sound.sampled.AudioFormat;
@@ -35,7 +39,7 @@ import our.stuff.graphics.LobbyScreen;
 import our.stuff.graphics.Projectile;
 import our.stuff.graphics.RoundCount;
 import our.stuff.networking.NetworkManager;
-import our.stuff.networking.PlayerNode;
+import our.stuff.networking.PacketManager;
 
 /**
     GameManager manages all parts of the game.
@@ -44,7 +48,6 @@ public class GameManager extends GameCore {
 	private boolean showFPS=true;
 	
     public static void main(String[] args) {
-    	
     	startMenu = new StartMenu();
     	lobbyScreen = new LobbyScreen();
     	startMenu.setVisible(true);	
@@ -119,7 +122,8 @@ public class GameManager extends GameCore {
     
     private GameManager()
     {
-    
+    	sem = new Semaphore(1, true);
+    	sem.release();
     }
 
     public static GameManager getGameManagerInstance()
@@ -135,6 +139,8 @@ public class GameManager extends GameCore {
     {
     	mode = m;
     }
+    
+    private Semaphore sem;
     
     private static NetworkManager networkManager = NetworkManager.GetInstance();
     
@@ -379,27 +385,11 @@ public class GameManager extends GameCore {
     
     public void setTracing(boolean value)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=2)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	CodeReflection.traceMethods(value);
     }
     
     public boolean getTracing()
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=2)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return CodeReflection.isTracing();
     }
     
@@ -420,66 +410,26 @@ public class GameManager extends GameCore {
     
     public void setShowFPS(boolean fps)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	showFPS = fps;
     }
     
     public boolean getShowFPS()
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return showFPS;
     }
     
     public void setMusicOn(boolean music)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	MUSIC_ON = music;
     }
     
     public boolean getMusicOn()
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	return MUSIC_ON;
     }
     
     public void setSoundFXOn(boolean sound)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	SOUND_ON = sound;
     }
     
@@ -642,15 +592,6 @@ public class GameManager extends GameCore {
     }
     
     public void checkInput(long elapsedTime) {
-
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=3)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         if (exit.isPressed()) {
             stop();
         }
@@ -677,14 +618,6 @@ public class GameManager extends GameCore {
     }
 
     public void draw(Graphics2D g) {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=3)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
     	Font temp;
         renderer.draw(g, map,
             screen.getWidth(), screen.getHeight());
@@ -716,14 +649,6 @@ public class GameManager extends GameCore {
         Gets the current map.
     */
     public TileMap getMap() {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=0)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         return map;
     }
 
@@ -748,14 +673,6 @@ public class GameManager extends GameCore {
     public Point getTileCollision(Sprite sprite,
         float newX, float newY)
     {
-    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=4)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
         float fromX = Math.min(sprite.getX(), newX);
         float fromY = Math.min(sprite.getY(), newY);
         float toX = Math.max(sprite.getX(), newX);
@@ -844,14 +761,92 @@ public class GameManager extends GameCore {
         	return(otherSprite);
         return null;	//no collision, return null
     }
+    
+    public Semaphore getSemmy()
+    {
+    	return sem;
+    }
 
-
+    private ConcurrentLinkedQueue<DatagramPacket> packetQueue = new ConcurrentLinkedQueue<DatagramPacket>();
+    
+    public void queuePacket(DatagramPacket packet)
+    {
+	    packetQueue.add(packet);
+    }
+    
+    public void processPackets()
+    {
+    	while(!packetQueue.isEmpty())
+    	{
+			DatagramPacket packet = packetQueue.poll();
+    		//DatagramPacket packet = new DatagramPacket(new byte[128], 128);
+			if(packet == null)
+				return;
+	    	byte[] data = packet.getData();
+			//byte[] data = new byte[128];
+			byte id = data[0];
+			switch (id)
+			{
+			case PacketManager.TYPE_SPAWN:
+ 				String name = new String(Arrays.copyOfRange(data, 1, data.length));
+ 				name = name.substring(0, name.indexOf(0));
+ 				System.out.println(name);
+				switch (name)
+				{
+				case "Ant":
+					break;
+				case "Balloon":
+					System.out.println("BALLOON");
+					break;
+				case "Bear":
+					break;
+				case "Bee":
+					break;
+				case "Boss":
+					break;
+				case "Dragonfly":
+					break;
+				case "FireAnt":
+					break;
+				case "Fly":
+					break;
+				case "Grub":
+					break;
+				case "HomingFly":
+					break;
+				case "Monkey":
+					break;
+				case "Player":
+					break;
+				case "Raccoon":
+					break;
+				case "RandomFly":
+					break;
+				case "SinuousFly":
+					break;
+				case "Zombie":
+					System.out.println("THE BIG Z");
+					Animation a = new Animation();
+			    	a.addFrame(resourceManager.loadImage("zombie.png"), 50);
+			    	Zombie z = new Zombie(a, a, a, a);
+			    	z.setX(600);
+			    	z.setY(450);
+					queueSprite(z);
+					break;
+				}
+				break;
+			case PacketManager.TYPE_PLAYERPOS:
+				break;
+			}
+    	}
+    }
+    
+    
     /**
         Updates Animation, position, and velocity of all Sprites
         in the current map.
     */
     public void update(long elapsedTime) {   	   	
-    	// smooth out the elapsed time
     	elapsedTime = timeSmoothie.getTime(elapsedTime);
     	currentElapsedTime = elapsedTime;
     	totalElapsedTime += elapsedTime;
@@ -927,6 +922,17 @@ public class GameManager extends GameCore {
         	break;
         }
 
+        try
+		{
+			sem.acquire();
+	        processPackets();
+	        sem.release();
+		} catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         // update other sprites
         while (!spriteQueue.isEmpty())
         {
