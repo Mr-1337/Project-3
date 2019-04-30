@@ -28,7 +28,7 @@ public class ResourceManager {
     private GraphicsConfiguration gc;
 
     // host sprites used for cloning
-    private Sprite playerSprite;
+    public Sprite playerSprite;
     private Sprite musicSprite;
     private Sprite coinSprite;
     private Sprite goalSprite;

@@ -791,8 +791,8 @@ public class GameManager extends GameCore {
 			{
 			case PacketManager.TYPE_SPAWN:
  				String name = new String(Arrays.copyOfRange(data, 1, data.length));
- 				name = name.substring(0, name.indexOf(0) - 4);
- 				int entID = bb.getInt(bb.capacity()-4);
+ 				name = name.substring(0, name.indexOf("END"));
+ 				int entID = bb.getInt(name.length());
  				System.out.println(name);
 				switch (name)
 				{
@@ -820,6 +820,11 @@ public class GameManager extends GameCore {
 				case "Monkey":
 					break;
 				case "Player":
+					System.out.println("i have a clone, and he's coming to kill me");
+					Player p = (Player) resourceManager.playerSprite.clone();
+					p.setX(500);
+					p.setY(400);
+					queueSprite(p);
 					break;
 				case "Raccoon":
 					break;
