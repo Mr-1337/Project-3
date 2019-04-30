@@ -9,6 +9,10 @@ import javax.swing.ImageIcon;
 
 import com.brackeen.javagamebook.graphics.*;
 import com.brackeen.javagamebook.tilegame.sprites.*;
+
+import our.stuff.networking.Client;
+import our.stuff.networking.NetworkManager;
+
 import com.brackeen.javagamebook.codereflection.*;
 
 
@@ -209,11 +213,19 @@ public class ResourceManager {
                 	((PowerUp.Warp)warpSprite).setWarpValue((ch-'0')+2+currentMap);
                 	addSprite(newMap, warpSprite, x, y);
                 }
-                else	
+                else
+                {
                 	for(char i='a'; i<'a'+s.getNumberOfEnemies();i++)
-                		if (ch == i) {
-                			addSprite(newMap, enemySprites[(int)(i-'a')], x, y);
+                	{
+                		if (ch == i) 
+                		{
+                			if (!(NetworkManager.GetInstance().getCurrent() instanceof Client))
+                			{
+                				addSprite(newMap, enemySprites[(int)(i-'a')], x, y);
+                			}
                 		}
+                	}
+                }
             }
         }
 

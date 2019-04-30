@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.net.DatagramPacket;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -783,13 +784,15 @@ public class GameManager extends GameCore {
 			if(packet == null)
 				return;
 	    	byte[] data = packet.getData();
-			//byte[] data = new byte[128];
-			byte id = data[0];
-			switch (id)
+			ByteBuffer bb = ByteBuffer.allocate(data.length);
+			bb.put(data);
+			byte packetType = data[0];
+			switch (packetType)
 			{
 			case PacketManager.TYPE_SPAWN:
  				String name = new String(Arrays.copyOfRange(data, 1, data.length));
- 				name = name.substring(0, name.indexOf(0));
+ 				name = name.substring(0, name.indexOf(0) - 4);
+ 				int entID = bb.getInt(bb.capacity()-4);
  				System.out.println(name);
 				switch (name)
 				{

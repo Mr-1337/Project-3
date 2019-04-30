@@ -45,7 +45,19 @@ public abstract class Creature extends Sprite {
     protected float horizontalResponceTime = 25.5f;
     protected float verticalResponceTime = 25.5f;
     
+    protected int netID = -1;
+    
     protected boolean onGround;
+    
+    public void setID(int id)
+    {
+    	this.netID = id;
+    }
+    
+    public int getID()
+    {
+    	return netID;
+    }
     
     public boolean isOnGround()
     {

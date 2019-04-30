@@ -1,5 +1,7 @@
 package our.stuff.networking;
 
+import java.nio.ByteBuffer;
+
 import com.brackeen.javagamebook.tilegame.sprites.Creature;
 
 public class PacketManager
@@ -39,8 +41,16 @@ public class PacketManager
 	public static byte[] genEnemySpawnPacket(Creature enemy)
 	{
 		String name = enemy.getClass().getSimpleName();
+		StringBuilder sb = new StringBuilder(name);
+		sb.append("END");
+		name = sb.toString();
+		int id = enemy.getID();
 		byte[] enemyBytes = name.getBytes();
-		return genPacketData(TYPE_SPAWN, enemyBytes);
+		ByteBuffer bb = ByteBuffer.allocate(enemyBytes.length + 4);
+		bb.put(enemyBytes);
+		bb.putInt(bb.capacity() - 4, id);
+		
+		return genPacketData(TYPE_SPAWN, bb.array());
 	}
 	
 }
