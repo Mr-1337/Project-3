@@ -31,7 +31,7 @@ public class Server extends Thread implements NetworkInterface
 	{
 		for (PlayerNode p : players)
 		{
-			if (p.getIP() == ip)
+			if (p.getIP().equals(ip))
 				return p;
 		}
 		return null;

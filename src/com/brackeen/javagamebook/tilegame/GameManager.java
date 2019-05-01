@@ -794,7 +794,7 @@ public class GameManager extends GameCore {
 			case PacketManager.TYPE_SPAWN:
  				String name = new String(Arrays.copyOfRange(data, 1, data.length));
  				name = name.substring(0, name.indexOf("END"));
- 				int entID = bb.getInt(name.length()+4);
+ 				int spawnID = bb.getInt(name.length()+4);
  				System.out.println(name);
 				switch (name)
 				{
@@ -805,12 +805,12 @@ public class GameManager extends GameCore {
 					break;
 				case "Bear":
 					Bear be = (Bear) resourceManager.bear.clone();
-					be.setID(entID);
+					be.setID(spawnID);
 					queueSprite(be);
 					break;
 				case "Bee":
 					Bee b = (Bee) resourceManager.bee.clone();
-					b.setID(entID);
+					b.setID(spawnID);
 					queueSprite(b);
 					break;
 				case "Boss":
@@ -832,7 +832,7 @@ public class GameManager extends GameCore {
 					Player p = (Player) resourceManager.playerSprite.clone();
 					p.setX(100);
 					p.setY(250);
-					p.setID(entID);
+					p.setID(spawnID);
 					queueSprite(p);
 					break;
 				case "Raccoon":
@@ -854,7 +854,7 @@ public class GameManager extends GameCore {
 				break;
 			case PacketManager.TYPE_CREATUREPOS:
 				
-				int entID2 = bb.getInt(1);
+				int posID = bb.getInt(1);
 				float x = bb.getFloat(5);
 				float y = bb.getFloat(9);
 				System.out.println(x);
@@ -865,7 +865,7 @@ public class GameManager extends GameCore {
 					Sprite s = (Sprite) iter.next();
 					if (s instanceof Creature)
 					{
-						if (((Creature)s).getID() == entID2)
+						if (((Creature)s).getID() == posID)
 						{
 							s.setX(x);
 							s.setY(y);
@@ -874,6 +874,22 @@ public class GameManager extends GameCore {
 					}
 				}
 				break;
+			case PacketManager.TYPE_KILL:
+				
+				int killID = bb.getInt(1);
+				Iterator killIter = map.getSprites();
+				while (killIter.hasNext())
+				{
+					Sprite s = (Sprite) killIter.next();
+					if (s instanceof Creature)
+					{
+						if (((Creature)s).getID() == killID)
+						{
+							
+							break;
+						}
+					}
+				}
 			}
     	}
     }
@@ -985,6 +1001,7 @@ public class GameManager extends GameCore {
             if (sprite instanceof Creature) {
                 Creature creature = (Creature)sprite;
                 if (creature.getState() == Creature.STATE_DEAD) {
+                	networkManager.send(PacketManager.genKillPacket(creature));
                     i.remove();
                 }
                 else {
@@ -1028,101 +1045,104 @@ public class GameManager extends GameCore {
 
     	Player player = (Player)map.getPlayer();
         // apply gravity
-        if ((!creature.isFlying())&&(creature.getState()!=Creature.STATE_HURT)) {
-            creature.setVelocityY(creature.getVelocityY() +
-                GRAVITY * gravityMultiplier * elapsedTime);
-        }
-
-        
-        if(creature.isTrackingPlayer()) 
-        {
-        	if((creature.isIntelligent())/*&&(Math.abs(creature.getX()-player.getX())<200)*/
-        			&&(!player.isOnGround()))
-        	{
-        		if(player.getX()<creature.getX())
-        		{
-        			creature.setVelocityX(creature.getMaxSpeed()*2);
-        		}else
-        			creature.setVelocityX(-creature.getMaxSpeed()*2);
-        	}else
-        	{
-	        	if(creature.getX()>player.getX()+creature.getHorizontalResponceTime() && creature.getVelocityX()>0
-	        			||creature.getX()<player.getX()-creature.getHorizontalResponceTime() && creature.getVelocityX()<0)
-	        	{
-	        		// Swap direction so we can continue following the player
-	        		creature.setVelocityX(-creature.getVelocityX());
-	        	}
-	        	//If this creature is flying we must also change the y velocity
-	        	if((creature.isFlying()))
-	            	if(creature.getY()>player.getY()+creature.getVerticalResponceTime() && creature.getVelocityY()>0
-	            			||creature.getY()<player.getY()-creature.getVerticalResponceTime() && creature.getVelocityY()<0)
-	            	{
-	            		// Swap direction so we can continue following the player
-	            		creature.setVelocityY(-creature.getVelocityY());
-	            	}
+    	if (creature == player || networkManager.isServer())
+    	{
+	        if ((!creature.isFlying())&&(creature.getState()!=Creature.STATE_HURT)) {
+	            creature.setVelocityY(creature.getVelocityY() +
+	                GRAVITY * gravityMultiplier * elapsedTime);
 	        }
-        }
-        
-        // change x
-        float dx = creature.getVelocityX();
-        float oldX = creature.getX();
-        float newX = oldX + dx * elapsedTime;
-        Point tile =
-            getTileCollision(creature, newX, creature.getY());
-        if (tile == null) {
-            creature.setX(newX);
-        }
-        else {
-            // line up with the tile boundary
-            if (dx > 0) {
-                creature.setX(
-                    TileMapRenderer.tilesToPixels(tile.x) -
-                    creature.getWidth());
-            }
-            else if (dx < 0) {
-                creature.setX(
-                    TileMapRenderer.tilesToPixels(tile.x + 1));
-            }
-            creature.collideHorizontal();
-        }
-
-        // change y
-
-        float dy = creature.getVelocityY();
-        float oldY = creature.getY();
-        float newY = oldY + dy * elapsedTime;
-        //See if we need to hunt down player
-
-        tile = getTileCollision(creature, creature.getX(), newY);
-        if (tile == null) {
-            creature.setY(newY);
-        }
-        else {
-            // line up with the tile boundary
-            if (dy > 0) {
-                creature.setY(
-                    TileMapRenderer.tilesToPixels(tile.y) -
-                    creature.getHeight());
-            }
-            else if (dy < 0) {
-                creature.setY(
-                    TileMapRenderer.tilesToPixels(tile.y + 1));
-            }
-            creature.collideVertical();
-        }
-        
-        if (creature instanceof Player) {
-            boolean canKill = (oldY < creature.getY()-0.5);
-            Player pl = (Player)creature;
-            checkPlayerCollision(pl, canKill);
-            
-            //check if player is on the ground if so, set score multiplier to base
-            //and set consecutive bad guy kills to false
-            if(pl.isOnGround()){
-                pl.consecutiveHits = 0;
-                scoreBoard.setMultiplier(this.baseScoreMultiplier);	
-            }
-        }
+	
+	        
+	        if(creature.isTrackingPlayer()) 
+	        {
+	        	if((creature.isIntelligent())/*&&(Math.abs(creature.getX()-player.getX())<200)*/
+	        			&&(!player.isOnGround()))
+	        	{
+	        		if(player.getX()<creature.getX())
+	        		{
+	        			creature.setVelocityX(creature.getMaxSpeed()*2);
+	        		}else
+	        			creature.setVelocityX(-creature.getMaxSpeed()*2);
+	        	}else
+	        	{
+		        	if(creature.getX()>player.getX()+creature.getHorizontalResponceTime() && creature.getVelocityX()>0
+		        			||creature.getX()<player.getX()-creature.getHorizontalResponceTime() && creature.getVelocityX()<0)
+		        	{
+		        		// Swap direction so we can continue following the player
+		        		creature.setVelocityX(-creature.getVelocityX());
+		        	}
+		        	//If this creature is flying we must also change the y velocity
+		        	if((creature.isFlying()))
+		            	if(creature.getY()>player.getY()+creature.getVerticalResponceTime() && creature.getVelocityY()>0
+		            			||creature.getY()<player.getY()-creature.getVerticalResponceTime() && creature.getVelocityY()<0)
+		            	{
+		            		// Swap direction so we can continue following the player
+		            		creature.setVelocityY(-creature.getVelocityY());
+		            	}
+		        }
+	        }
+	        
+	        // change x
+	        float dx = creature.getVelocityX();
+	        float oldX = creature.getX();
+	        float newX = oldX + dx * elapsedTime;
+	        Point tile =
+	            getTileCollision(creature, newX, creature.getY());
+	        if (tile == null) {
+	            creature.setX(newX);
+	        }
+	        else {
+	            // line up with the tile boundary
+	            if (dx > 0) {
+	                creature.setX(
+	                    TileMapRenderer.tilesToPixels(tile.x) -
+	                    creature.getWidth());
+	            }
+	            else if (dx < 0) {
+	                creature.setX(
+	                    TileMapRenderer.tilesToPixels(tile.x + 1));
+	            }
+	            creature.collideHorizontal();
+	        }
+	
+	        // change y
+	
+	        float dy = creature.getVelocityY();
+	        float oldY = creature.getY();
+	        float newY = oldY + dy * elapsedTime;
+	        //See if we need to hunt down player
+	
+	        tile = getTileCollision(creature, creature.getX(), newY);
+	        if (tile == null) {
+	            creature.setY(newY);
+	        }
+	        else {
+	            // line up with the tile boundary
+	            if (dy > 0) {
+	                creature.setY(
+	                    TileMapRenderer.tilesToPixels(tile.y) -
+	                    creature.getHeight());
+	            }
+	            else if (dy < 0) {
+	                creature.setY(
+	                    TileMapRenderer.tilesToPixels(tile.y + 1));
+	            }
+	            creature.collideVertical();
+	        }
+	        
+	        if (creature instanceof Player) {
+	            boolean canKill = (oldY < creature.getY()-0.5);
+	            Player pl = (Player)creature;
+	            checkPlayerCollision(pl, canKill);
+	            
+	            //check if player is on the ground if so, set score multiplier to base
+	            //and set consecutive bad guy kills to false
+	            if(pl.isOnGround()){
+	                pl.consecutiveHits = 0;
+	                scoreBoard.setMultiplier(this.baseScoreMultiplier);	
+	            }
+	        }
+    	}
 
     }
 

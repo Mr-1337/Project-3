@@ -15,6 +15,7 @@ public class PacketManager
 	public static final byte TYPE_START = 5;
 	public static final byte TYPE_SPAWN = 6;
 	public static final byte TYPE_CREATUREPOS = 7;
+	public static final byte TYPE_KILL = 8;
 	
 	public static byte[] genPacketData(byte packetType)
 	{
@@ -65,6 +66,14 @@ public class PacketManager
 		billyBones.putFloat(y);
 		
 		return genPacketData(TYPE_CREATUREPOS, billyBones.array());
+	}
+	
+	public static byte[] genKillPacket(Creature toBeKilled)
+	{
+		int id = toBeKilled.getID();
+		ByteBuffer billyBones = ByteBuffer.allocate(4);
+		billyBones.putInt(id);
+		return genPacketData(TYPE_KILL, billyBones.array());
 	}
 	
 }
