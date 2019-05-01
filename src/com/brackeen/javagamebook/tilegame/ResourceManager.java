@@ -35,8 +35,25 @@ public class ResourceManager {
     private Sprite warpSprite;
     private Sprite healthSprite;
     
+    public Sprite ant;
     public Sprite bee;
     public Sprite bear;
+    public Sprite creepingDarkness;
+    public Sprite dartFrog;
+    public Sprite dragonfly;
+    public Sprite fireAnt;
+    public Sprite godzilla;
+    public Sprite gorilla;
+    public Sprite hyena;
+    public Sprite lion;
+    public Sprite moth;
+    public Sprite raccoon;
+    public Sprite rhino;
+    public Sprite scaryMoon;
+    public Sprite scorpion;
+    public Sprite spooder;
+    public Sprite vulture;
+    public Sprite zombie;
     
     private Sprite[] enemySprites;
     private ScriptManager s;
@@ -406,7 +423,79 @@ public class ResourceManager {
                             Animation a = new Animation();
                             a.addFrame(images[i][imageIndex++], 50);
                             enemyAnim[x][i] = a;
-        				}
+        			}
+                else
+            	if(s.getArchType(x).compareTo("scarymoon")==0) {
+            	      Animation a = new Animation();
+            	      a.addFrame(images[i][imageIndex++], 50);
+            	      enemyAnim[x][i] = a;
+            	      }
+            	else
+            	if(s.getArchType(x).compareTo("creepingdarkness")==0) {
+            	      Animation a = new Animation();
+            	      a.addFrame(images[i][imageIndex++], 50);
+            	      enemyAnim[x][i] = a;
+            	      }
+            	else
+            	if(s.getArchType(x).compareTo("spooder")==0) {
+            	      Animation a = new Animation();
+            	      a.addFrame(images[i][imageIndex++], 50);
+            	      enemyAnim[x][i] = a;
+            	      }
+            	else
+        		if(s.getArchType(x).compareTo("dartfrog")==0) {
+        		      Animation a = new Animation();
+        		      a.addFrame(images[i][imageIndex++], 50);
+        		      enemyAnim[x][i] = a;
+        		      }
+        		else
+        		if(s.getArchType(x).compareTo("godzilla")==0) {
+        		      Animation a = new Animation();
+        		      a.addFrame(images[i][imageIndex++], 50);
+        		      enemyAnim[x][i] = a;
+        		      }
+        		else
+        		if(s.getArchType(x).compareTo("gorilla")==0) {
+        		      Animation a = new Animation();
+        		      a.addFrame(images[i][imageIndex++], 50);
+        		      enemyAnim[x][i] = a;
+        		      }
+        		else
+    			if(s.getArchType(x).compareTo("hyena")==0) {
+    			      Animation a = new Animation();
+    			      a.addFrame(images[i][imageIndex++], 50);
+    			      enemyAnim[x][i] = a;
+    			      }
+    			else
+    			if(s.getArchType(x).compareTo("lion")==0) {
+    			      Animation a = new Animation();
+    			      a.addFrame(images[i][imageIndex++], 50);
+    			      enemyAnim[x][i] = a;
+    			      }
+    			else
+    			if(s.getArchType(x).compareTo("moth")==0) {
+    			      Animation a = new Animation();
+    			      a.addFrame(images[i][imageIndex++], 50);
+    			      enemyAnim[x][i] = a;
+    			      }
+    			else
+				if(s.getArchType(x).compareTo("rhino")==0) {
+				      Animation a = new Animation();
+				      a.addFrame(images[i][imageIndex++], 50);
+				      enemyAnim[x][i] = a;
+				      }
+				else
+				if(s.getArchType(x).compareTo("scorpion")==0) {
+				      Animation a = new Animation();
+				      a.addFrame(images[i][imageIndex++], 50);
+				      enemyAnim[x][i] = a;
+				      }
+				else
+				if(s.getArchType(x).compareTo("vulture")==0) {
+				      Animation a = new Animation();
+				      a.addFrame(images[i][imageIndex++], 50);
+				      enemyAnim[x][i] = a;
+				      }
             }
         }
 
@@ -479,7 +568,55 @@ public class ResourceManager {
         	else
             if(s.getArchType(x).compareTo("dragonfly")==0) {
                     enemySprites[x]=new Dragonfly(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
-         }
+            }
+            else
+        	if(s.getArchType(x).compareTo("scarymoon")==0) {
+        	      enemySprites[x]=new ScaryMoon(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+        	        }
+        	else
+        	if(s.getArchType(x).compareTo("creepingdarkness")==0) {
+        	      enemySprites[x]=new CreepingDarkness(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+        	        }
+        	else
+        	if(s.getArchType(x).compareTo("spooder")==0) {
+        	      enemySprites[x]=new Spooder(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+        	        }
+        	else
+            if(s.getArchType(x).compareTo("dartfrog")==0) {
+                    enemySprites[x]=new Dragonfly(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            }
+            else
+            if(s.getArchType(x).compareTo("godzilla")==0) {
+                    enemySprites[x]=new Godzilla(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            }
+            else
+            if(s.getArchType(x).compareTo("gorilla")==0) {
+                    enemySprites[x]=new Gorilla(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            }
+            else
+            if(s.getArchType(x).compareTo("hyena")==0) {
+                    enemySprites[x]=new Hyena(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            }
+            else
+            if(s.getArchType(x).compareTo("lion")==0) {
+                    enemySprites[x]=new Lion(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            }
+            else
+            if(s.getArchType(x).compareTo("moth")==0) {
+                    enemySprites[x]=new Moth(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            }
+            else
+            if(s.getArchType(x).compareTo("rhino")==0) {
+                    enemySprites[x]=new Rhino(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            }
+            else
+            if(s.getArchType(x).compareTo("scorpion")==0) {
+                    enemySprites[x]=new Scorpion(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            }
+            else
+            if(s.getArchType(x).compareTo("vulture")==0) {
+                    enemySprites[x]=new Vulture(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            }
     }
     
     public String levelBackground()

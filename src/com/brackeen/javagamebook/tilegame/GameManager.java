@@ -897,7 +897,7 @@ public class GameManager extends GameCore {
 			}
 			if (networkManager.isServer())
 			{
-				networkManager.send(data);
+				//networkManager.getServer().send(packet);
 			}
     	}
     }

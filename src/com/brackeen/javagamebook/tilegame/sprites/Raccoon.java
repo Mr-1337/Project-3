@@ -26,7 +26,7 @@ public class Raccoon extends Creature {
 		if (time > SHOOT_SPEED && Math.abs(GameManager.getGameManagerInstance().getMap().getPlayer().getX() - this.getX()) < 400)
 		{
 			Animation a = new Animation();
-			a.addFrame(GameManager.getGameManagerInstance().getResourceManagerInstance().loadImage("balloon.png"), 15);
+			a.addFrame(GameManager.getGameManagerInstance().getResourceManagerInstance().loadImage("trashball.png"), 15);
 			Projectile shot = new Projectile(a, a, a, a, this.getX(), this.getY() - 70);
 			
 			GameManager.getGameManagerInstance().queueSprite((Sprite)shot);

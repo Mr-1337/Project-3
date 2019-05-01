@@ -135,6 +135,22 @@ public class Server extends Thread implements NetworkInterface
 		}
 	}
 	
+	public void send(DatagramPacket p)
+	{
+		for (PlayerNode n : players)
+		{
+			if (p.getAddress().equals(n.getIP()))
+				continue;
+			try
+			{
+				socket.send(p);
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	/**
 	 * Sends a packet to a specific player.
 	 * @param data

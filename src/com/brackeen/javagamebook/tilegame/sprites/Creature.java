@@ -243,7 +243,14 @@ public boolean isIntelligent() {
         
         if (NetworkManager.GetInstance().isServer())
         {
-        	NetworkManager.GetInstance().send(PacketManager.genCreaturePosPacket(this));
+        	if (this instanceof Player)
+        	{
+        		Player pl = (Player)this;
+        		if (pl.local == true)
+        			NetworkManager.GetInstance().send(PacketManager.genCreaturePosPacket(this));
+        	}
+        	else
+        		NetworkManager.GetInstance().send(PacketManager.genCreaturePosPacket(this));
         }
      
     }

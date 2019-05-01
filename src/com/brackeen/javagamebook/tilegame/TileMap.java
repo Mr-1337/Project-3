@@ -94,8 +94,8 @@ public class TileMap {
     */
     public void setPlayer(Sprite player) {
         this.player = player;
-        ((Creature)player).setID(56);
-        if (NetworkManager.GetInstance().getCurrent() != null);
+        ((Creature)player).setID(50);
+        if (NetworkManager.GetInstance().getCurrent() != null)
         	network.send(PacketManager.genEnemySpawnPacket((Creature)player));
     }
 
