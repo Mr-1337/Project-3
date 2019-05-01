@@ -82,17 +82,18 @@ public class Server extends Thread implements NetworkInterface
 	
 	@Override
 	public void run()
-	{
-		DatagramPacket p = new DatagramPacket(new byte[64], 64);
+	{		
+		DatagramPacket p = new DatagramPacket(new byte[256], 256);
 		try
 		{
-			Semaphore semmy = GameManager.getGameManagerInstance().getSemmy();
 			while(open)
 			{
-				
-				p.setData(new byte[64]);
+				p.setData(new byte[256]);
 				socket.receive(p);
-				listener.callback(p);
+				DatagramPacket p2 = new DatagramPacket(p.getData(), p.getLength());
+				p2.setAddress(p.getAddress());
+				p2.setPort(p.getPort());
+				listener.callback(p2);
 			}
 		} catch (IOException e)
 		{
@@ -118,7 +119,7 @@ public class Server extends Thread implements NetworkInterface
 	@Override
 	public void send(byte[] data)
 	{
-		System.out.println("Sending packet to clients");
+		//System.out.println("Sending packet to clients");
 		for (PlayerNode n : players)
 		{
 			DatagramPacket p = new DatagramPacket(data, data.length);

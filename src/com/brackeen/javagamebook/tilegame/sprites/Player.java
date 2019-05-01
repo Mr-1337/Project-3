@@ -18,6 +18,7 @@ public class Player extends Creature {
         Animation deadLeft, Animation deadRight)
     {
         super(left, right, deadLeft, deadRight);
+        helper = true;
     }
 
     public void jump(boolean forceJump) {

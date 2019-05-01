@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import com.brackeen.javagamebook.graphics.Sprite;
 import com.brackeen.javagamebook.tilegame.sprites.Creature;
+import com.brackeen.javagamebook.tilegame.sprites.Player;
 
 import our.stuff.networking.Client;
 import our.stuff.networking.NetworkManager;
@@ -93,8 +94,8 @@ public class TileMap {
     */
     public void setPlayer(Sprite player) {
         this.player = player;
-        ((Creature)player).setID(55);
-        if (NetworkManager.GetInstance().getCurrent() != null)
+        ((Creature)player).setID(56);
+        if (NetworkManager.GetInstance().getCurrent() != null);
         	network.send(PacketManager.genEnemySpawnPacket((Creature)player));
     }
 
@@ -109,9 +110,12 @@ public class TileMap {
     		//Alert all the game clients about this sprite's creation		
     		if (sprite instanceof Creature)
     		{
-    			((Creature) sprite).setID(entID);
-    			entID++;
-    			network.send(PacketManager.genEnemySpawnPacket((Creature)sprite));
+    			if (!(sprite instanceof Player) && NetworkManager.GetInstance().isServer())
+    			{
+        			((Creature) sprite).setID(entID);
+        			entID++;
+    				network.send(PacketManager.genEnemySpawnPacket((Creature)sprite));
+    			}
     		}
     	}
     	else if (network.getCurrent() instanceof Client)

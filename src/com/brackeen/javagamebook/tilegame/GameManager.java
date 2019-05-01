@@ -857,6 +857,7 @@ public class GameManager extends GameCore {
 				int posID = bb.getInt(1);
 				float x = bb.getFloat(5);
 				float y = bb.getFloat(9);
+				System.out.println(posID);
 				System.out.println(x);
 				System.out.println(y);
 				Iterator iter = map.getSprites();
@@ -867,6 +868,7 @@ public class GameManager extends GameCore {
 					{
 						if (((Creature)s).getID() == posID)
 						{
+							System.out.println("MOVEY BOI");
 							s.setX(x);
 							s.setY(y);
 							break;
@@ -900,120 +902,133 @@ public class GameManager extends GameCore {
         Updates Animation, position, and velocity of all Sprites
         in the current map.
     */
-    public void update(long elapsedTime) {   	   	
-    	elapsedTime = timeSmoothie.getTime(elapsedTime);
-    	currentElapsedTime = elapsedTime;
-    	totalElapsedTime += elapsedTime;
-    	if(hitClock!=0)		//the player was hit, give invulnerability for hitClock seconds
-    	{
-    		hitClock-=elapsedTime;
-    		if(hitClock<0)
-    			hitClock=0;
-    	}
-    	
-        Creature player = (Creature)map.getPlayer();
-        Graphics2D g = screen.getGraphics();
-        
-        if (networkManager.getCurrent() == null)
-        {
-	        if(player.getY()>screen.getHeight()+player.getHeight()) 
-	        {//if the player falls out of the bottom of the screen, kill them
-	                player.setState(Creature.STATE_DEAD);
-	                midiPlayer.stop();
-	                soundManager.play(dieSound);
-	                this.baseScoreMultiplier=1.0f;
-	        		scoreBoard.setMultiplier(this.baseScoreMultiplier);
-	        		
-	        		totalElapsedTime = 0;
-	        		
-	        		//reset Star total
-	        		scoreBoard.setStarTotal(0);
-	            	try{
-	                	Thread.sleep(750);	
-	                }catch(Exception io){};
-	                hitClock=0;
-	        } 
-        }
-        
+	public void update(long elapsedTime)
+	{
+		elapsedTime = timeSmoothie.getTime(elapsedTime);
+		currentElapsedTime = elapsedTime;
+		totalElapsedTime += elapsedTime;
+		if (hitClock != 0) // the player was hit, give invulnerability for hitClock seconds
+		{
+			hitClock -= elapsedTime;
+			if (hitClock < 0)
+				hitClock = 0;
+		}
 
-        // player is dead! start map over
-        if (networkManager.getCurrent() == null)
-        {
-	        if (player.getState() == Creature.STATE_DEAD) {
-	        	health=START_HEALTH;
-	        	map = resourceManager.reloadMap();
-	            try{
-	            	Thread.sleep(LEVEL_SWITCH_PAUSE+300);	//give a little time before reloading the map
-	            }catch(Exception io){};
-	            if(MUSIC_ON){
-	            	midiPlayer.stop();
-	            	midiPlayer.play(sequence, true);
-	            }
-	            
-	            return;
-	        }
-        }
+		Creature player = (Creature) map.getPlayer();
+		Graphics2D g = screen.getGraphics();
 
-        // get keyboard/mouse input
-        checkInput(elapsedTime);
+		if (networkManager.getCurrent() == null)
+		{
+			if (player.getY() > screen.getHeight() + player.getHeight())
+			{// if the player falls out of the bottom of the screen, kill them
+				player.setState(Creature.STATE_DEAD);
+				midiPlayer.stop();
+				soundManager.play(dieSound);
+				this.baseScoreMultiplier = 1.0f;
+				scoreBoard.setMultiplier(this.baseScoreMultiplier);
 
-        // update player
-        updateCreature(player, elapsedTime);
-        player.update(elapsedTime);
-               
-        switch(mode)
-        {
-        case MODE_NORMAL:
-        	break;
-        case MODE_WAVE:
-        	roundCount.update(elapsedTime);
-        	if (roundCount.isNewRound())
-        	{
-        		startWaveRound();
-        	}
-        	break;
-        case MODE_RACE:
-        	break;
-        case MODE_COOP:
-        	networkManager.send(PacketManager.genCreaturePosPacket(player));
-        	break;
-        }
+				totalElapsedTime = 0;
 
-        try
+				// reset Star total
+				scoreBoard.setStarTotal(0);
+				try
+				{
+					Thread.sleep(750);
+				} catch (Exception io)
+				{
+				}
+				;
+				hitClock = 0;
+			}
+		}
+
+		// player is dead! start map over
+		if (networkManager.getCurrent() == null)
+		{
+			if (player.getState() == Creature.STATE_DEAD)
+			{
+				health = START_HEALTH;
+				map = resourceManager.reloadMap();
+				try
+				{
+					Thread.sleep(LEVEL_SWITCH_PAUSE + 300); // give a little time before reloading the map
+				} catch (Exception io)
+				{
+				}
+				;
+				if (MUSIC_ON)
+				{
+					midiPlayer.stop();
+					midiPlayer.play(sequence, true);
+				}
+
+				return;
+			}
+		}
+
+		// get keyboard/mouse input
+		checkInput(elapsedTime);
+
+		// update player
+		updateCreature(player, elapsedTime);
+		player.update(elapsedTime);
+
+		switch (mode)
+		{
+		case MODE_NORMAL:
+			break;
+		case MODE_WAVE:
+			roundCount.update(elapsedTime);
+			if (roundCount.isNewRound())
+			{
+				startWaveRound();
+			}
+			break;
+		case MODE_RACE:
+			break;
+		case MODE_COOP:
+			networkManager.send(PacketManager.genCreaturePosPacket(player));
+			break;
+		}
+
+		try
 		{
 			sem.acquire();
-	        processPackets();
-	        sem.release();
+			processPackets();
+			sem.release();
 		} catch (InterruptedException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
-        // update other sprites
-        while (!spriteQueue.isEmpty())
-        {
-        	map.addSprite(spriteQueue.remove());
-        }
-        
-        Iterator i = map.getSprites();
-        while (i.hasNext()) {
-            Sprite sprite = (Sprite)i.next();
-            if (sprite instanceof Creature) {
-                Creature creature = (Creature)sprite;
-                if (creature.getState() == Creature.STATE_DEAD) {
-                	if (networkManager.getCurrent() != null)
-                		networkManager.send(PacketManager.genKillPacket(creature));
-                    i.remove();
-                }
-                else {
-                    updateCreature(creature, elapsedTime);
-                }
-            }
-            // normal update
-            sprite.update(elapsedTime);
-        }
-    }
+
+		// update other sprites
+		while (!spriteQueue.isEmpty())
+		{
+			map.addSprite(spriteQueue.remove());
+		}
+
+		Iterator i = map.getSprites();
+		while (i.hasNext())
+		{
+			Sprite sprite = (Sprite) i.next();
+			if (sprite instanceof Creature)
+			{
+				Creature creature = (Creature) sprite;
+				if (creature.getState() == Creature.STATE_DEAD)
+				{
+					if (networkManager.getCurrent() != null)
+						networkManager.send(PacketManager.genKillPacket(creature));
+					i.remove();
+				} else
+				{
+					updateCreature(creature, elapsedTime);
+				}
+			}
+			// normal update
+			sprite.update(elapsedTime);
+		}
+	}
     
     private Queue<Sprite> spriteQueue = new LinkedList<Sprite>();
     
@@ -1154,147 +1169,152 @@ public class GameManager extends GameCore {
         canKill is true, collisions with Creatures will kill
         them.
     */
-    public void checkPlayerCollision(Player player,
-        boolean canKill)
-    {
-    	boolean execute=true;
-        if (!player.isAlive()) {
-            return;
-        }
+	public void checkPlayerCollision(Player player, boolean canKill)
+	{
+		boolean execute = true;
+		if (!player.isAlive())
+		{
+			return;
+		}
 
-        // check for player collision with other sprites
-        Sprite collisionSprite = getSpriteCollision(player);
-        
-        if (collisionSprite instanceof PowerUp) {
-            acquirePowerUp((PowerUp)collisionSprite);
-            collisionSprite=null;
-        }
-        else if (collisionSprite instanceof Creature) {
-            Creature badguy = (Creature)collisionSprite;
-            if (canKill) {
-                // kill the badguy and make player bounce, and increase score
-            	
-            	//Multiplier is equal to base level multiplier times 2^numberOfBadGuysKilled
-            	
-            	if(badguy instanceof Boss){
-            		execute=false;
-            		((Boss)badguy).decrementHealth();
-            		if(((Boss)badguy).getHealth()==0) //beat the boss, move to next leve
-            		{
-            			this.baseScoreMultiplier++;
-                		player.consecutiveHits++;
-                		scoreBoard.setMultiplier((float) (10*player.consecutiveHits));
-                		scoreBoard.addScore(10);
-                		
-            			if(SOUND_ON)
-            				soundManager.play(boopSound);
-                		badguy.setState(Creature.STATE_DYING);
-                		player.setY(badguy.getY() - player.getHeight());
-                		player.jump(true);
-                		
-                    	midiPlayer.stop();	//temporarily stop music
-                    	
-                    	if(SOUND_ON)
-                    		soundManager.play(endOfLevelSound);
-                    	
-                        
-                        scoreBoard.drawLevelOver();	//draw  Level over banner
-                        
-                        draw(screen.getGraphics());
-                        screen.update();
-            			
-                        
-                        try{
-                        	Thread.sleep(LEVEL_SWITCH_PAUSE);	//give a little time before reloading the map
-                        						//needed to avoid a sound bug
-                        }catch(Exception io){};
-            			
-                        scoreBoard.stopLevelOver();	//take down level over banner
-                        
-                        
-                        totalElapsedTime=0;	//reset the clock
-                        map = resourceManager.loadNextMap();
-                        renderer.setBackground(resourceManager.loadImage(resourceManager.levelBackground()));
-              
-                        //change music
-                        if(MUSIC_ON){
-                        sequence =
-                            midiPlayer.getSequence("sounds/"+resourceManager.levelMusic());
-                        midiPlayer.play(sequence, true);
-                        }
-                        execute=false;
-            		}else
-            		{
-            			if(SOUND_ON)
-            				soundManager.play(boopSound);
-                		
-            	
-            			player.consecutiveHits++;
-                		scoreBoard.setMultiplier((float) (10*player.consecutiveHits));
-                		scoreBoard.addScore(10);
-                		
-            			player.setY(badguy.getY() - player.getHeight());
-            			badguy.setState(Creature.STATE_HURT);
-            			
-                		player.jump(true);
-            		}
-            	}
-            	
-            	if(execute && !(badguy instanceof Projectile))
-            	{	
-            		if(SOUND_ON)
-            			soundManager.play(boopSound);
-            		if(!badguy.isHelper()){//if it's a helper, don't do the following
-            			badguy.decrementHealth();
-            			if(badguy.getHealth()==0)
-            			{	//The Bad Guy is dead
-            				badguy.setState(Creature.STATE_DYING);
-            			}else
-		        		{	//The Bad Guy is hurt, but still alive
-		        			badguy.setState(Creature.STATE_HURT);
-		        		}
-            			player.consecutiveHits++;
-            			scoreBoard.setMultiplier((float) (10*player.consecutiveHits));
-            			scoreBoard.addScore(10);
-            		}
-        			player.setY(badguy.getY() - player.getHeight());
-        			player.jump(true);
-            	}
-            	execute=true;
-            }
-            else {
-            	if((hitClock==0)&&(!badguy.isHelper())){
-            		if(!INVINCIBLE)	//If you're not invincible...
-	            	if(health==0)
-	            	{	//player has run out of health, he will die
-	            		// player dies!
-	            		if(MUSIC_ON)
-	            			midiPlayer.stop();
-	            		
-	            		if(SOUND_ON)
-	            			soundManager.play(dieSound);
-	            		player.setState(Creature.STATE_DYING);
-	                
-	            		//reset score multipliers
-	            		this.baseScoreMultiplier=1.0f;
-	            		scoreBoard.setMultiplier(this.baseScoreMultiplier);
-	            	
-	            		player.consecutiveHits=0;
-	            		totalElapsedTime = 0;
-	            		
-	            		//reset Star total
-	            		scoreBoard.setStarTotal(0);
-	            	}else 
-	            		{ 
-	            			hitClock=MAX_HIT_CLOCK;
-	            			if(SOUND_ON)
-	            				soundManager.play(hurtSound);
-	            			health--;	//deduct from players health
-	            		}
-            	}
-            }
-        }
-    }
+		// check for player collision with other sprites
+		Sprite collisionSprite = getSpriteCollision(player);
+
+		if (collisionSprite instanceof PowerUp)
+		{
+			acquirePowerUp((PowerUp) collisionSprite);
+			collisionSprite = null;
+		} else if (collisionSprite instanceof Creature)
+		{
+			Creature badguy = (Creature) collisionSprite;
+			if (canKill)
+			{
+				// kill the badguy and make player bounce, and increase score
+
+				// Multiplier is equal to base level multiplier times 2^numberOfBadGuysKilled
+
+				if (badguy instanceof Boss)
+				{
+					execute = false;
+					((Boss) badguy).decrementHealth();
+					if (((Boss) badguy).getHealth() == 0) // beat the boss, move to next leve
+					{
+						this.baseScoreMultiplier++;
+						player.consecutiveHits++;
+						scoreBoard.setMultiplier((float) (10 * player.consecutiveHits));
+						scoreBoard.addScore(10);
+
+						if (SOUND_ON)
+							soundManager.play(boopSound);
+						badguy.setState(Creature.STATE_DYING);
+						player.setY(badguy.getY() - player.getHeight());
+						player.jump(true);
+
+						midiPlayer.stop(); // temporarily stop music
+
+						if (SOUND_ON)
+							soundManager.play(endOfLevelSound);
+
+						scoreBoard.drawLevelOver(); // draw Level over banner
+
+						draw(screen.getGraphics());
+						screen.update();
+
+						try
+						{
+							Thread.sleep(LEVEL_SWITCH_PAUSE); // give a little time before reloading the map
+							// needed to avoid a sound bug
+						} catch (Exception io)
+						{
+						}
+						;
+
+						scoreBoard.stopLevelOver(); // take down level over banner
+
+						totalElapsedTime = 0; // reset the clock
+						map = resourceManager.loadNextMap();
+						renderer.setBackground(resourceManager.loadImage(resourceManager.levelBackground()));
+
+						// change music
+						if (MUSIC_ON)
+						{
+							sequence = midiPlayer.getSequence("sounds/" + resourceManager.levelMusic());
+							midiPlayer.play(sequence, true);
+						}
+						execute = false;
+					} else
+					{
+						if (SOUND_ON)
+							soundManager.play(boopSound);
+
+						player.consecutiveHits++;
+						scoreBoard.setMultiplier((float) (10 * player.consecutiveHits));
+						scoreBoard.addScore(10);
+
+						player.setY(badguy.getY() - player.getHeight());
+						badguy.setState(Creature.STATE_HURT);
+
+						player.jump(true);
+					}
+				}
+
+				if (execute && !(badguy instanceof Projectile))
+				{
+					if (SOUND_ON)
+						soundManager.play(boopSound);
+					if (!badguy.isHelper())
+					{// if it's a helper, don't do the following
+						badguy.decrementHealth();
+						if (badguy.getHealth() == 0)
+						{ // The Bad Guy is dead
+							badguy.setState(Creature.STATE_DYING);
+						} else
+						{ // The Bad Guy is hurt, but still alive
+							badguy.setState(Creature.STATE_HURT);
+						}
+						player.consecutiveHits++;
+						scoreBoard.setMultiplier((float) (10 * player.consecutiveHits));
+						scoreBoard.addScore(10);
+					}
+					player.setY(badguy.getY() - player.getHeight());
+					player.jump(true);
+				}
+				execute = true;
+			} else
+			{
+				if ((hitClock == 0) && (!badguy.isHelper()))
+				{
+					if (!INVINCIBLE) // If you're not invincible...
+						if (health == 0)
+						{ // player has run out of health, he will die
+							// player dies!
+							if (MUSIC_ON)
+								midiPlayer.stop();
+
+							if (SOUND_ON)
+								soundManager.play(dieSound);
+							player.setState(Creature.STATE_DYING);
+
+							// reset score multipliers
+							this.baseScoreMultiplier = 1.0f;
+							scoreBoard.setMultiplier(this.baseScoreMultiplier);
+
+							player.consecutiveHits = 0;
+							totalElapsedTime = 0;
+
+							// reset Star total
+							scoreBoard.setStarTotal(0);
+						} else
+						{
+							hitClock = MAX_HIT_CLOCK;
+							if (SOUND_ON)
+								soundManager.play(hurtSound);
+							health--; // deduct from players health
+						}
+				}
+			}
+		}
+	}
 
 
     /**

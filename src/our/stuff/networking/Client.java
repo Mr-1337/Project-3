@@ -55,26 +55,15 @@ public class Client extends Thread implements NetworkInterface
 	@Override
 	public void run()
 	{
-		Semaphore semmy = gm.getSemmy();
-
 		DatagramPacket p = new DatagramPacket(new byte[256], 256);
 		try
 		{
 			while(open)
 			{
-				try
-				{
-					semmy.acquire();
-				} catch (InterruptedException e1)
-				{
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 				p.setData(new byte[256]);
 				socket.receive(p);
 				DatagramPacket p2 = new DatagramPacket(p.getData(), p.getLength());
 				listener.callback(p2);
-				semmy.release();
 			}
 		} catch (IOException e)
 		{
