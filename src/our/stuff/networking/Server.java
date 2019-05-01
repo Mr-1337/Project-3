@@ -6,6 +6,9 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.LinkedList;
+import java.util.concurrent.Semaphore;
+
+import com.brackeen.javagamebook.tilegame.GameManager;
 
 /**
  * The server that is responsible for maintaining the connections of all the connected game clients
@@ -83,8 +86,10 @@ public class Server extends Thread implements NetworkInterface
 		DatagramPacket p = new DatagramPacket(new byte[64], 64);
 		try
 		{
+			Semaphore semmy = GameManager.getGameManagerInstance().getSemmy();
 			while(open)
 			{
+				
 				p.setData(new byte[64]);
 				socket.receive(p);
 				listener.callback(p);

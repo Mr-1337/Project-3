@@ -883,9 +883,10 @@ public class GameManager extends GameCore {
 					Sprite s = (Sprite) killIter.next();
 					if (s instanceof Creature)
 					{
-						if (((Creature)s).getID() == killID)
+						Creature c = (Creature)s;
+						if (c.getID() == killID)
 						{
-							
+							c.setState(Creature.STATE_DEAD);
 							break;
 						}
 					}
@@ -1001,7 +1002,8 @@ public class GameManager extends GameCore {
             if (sprite instanceof Creature) {
                 Creature creature = (Creature)sprite;
                 if (creature.getState() == Creature.STATE_DEAD) {
-                	networkManager.send(PacketManager.genKillPacket(creature));
+                	if (networkManager.getCurrent() != null)
+                		networkManager.send(PacketManager.genKillPacket(creature));
                     i.remove();
                 }
                 else {
@@ -1045,7 +1047,7 @@ public class GameManager extends GameCore {
 
     	Player player = (Player)map.getPlayer();
         // apply gravity
-    	if (creature == player || networkManager.isServer())
+    	if (networkManager.getCurrent() == null || creature == player || networkManager.isServer())
     	{
 	        if ((!creature.isFlying())&&(creature.getState()!=Creature.STATE_HURT)) {
 	            creature.setVelocityY(creature.getVelocityY() +

@@ -286,6 +286,7 @@ public class LobbyScreen extends JFrame
 		try
 		{
 			Thread.sleep(1000);
+			networkManager.getServer().setCallback(new ClientGameListener());
 		} catch (InterruptedException e)
 		{
 			e.printStackTrace();

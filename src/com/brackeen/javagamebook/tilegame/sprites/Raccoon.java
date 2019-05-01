@@ -9,7 +9,7 @@ import our.stuff.graphics.Projectile;
 public class Raccoon extends Creature {
 	
 	private int time = 0;
-	private final int SHOOT_SPEED = 500;
+	private final int SHOOT_SPEED = 5000;
 	
 	public Raccoon(Animation left, Animation right, Animation deadLeft, Animation deadRight) {
 		super(left, right, deadLeft, deadRight);
