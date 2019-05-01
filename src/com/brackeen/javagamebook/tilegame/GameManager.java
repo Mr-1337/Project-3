@@ -28,12 +28,28 @@ import com.brackeen.javagamebook.sound.Sound;
 import com.brackeen.javagamebook.sound.SoundManager;
 import com.brackeen.javagamebook.test.GameCore;
 import com.brackeen.javagamebook.test.ScoreBoard;
+import com.brackeen.javagamebook.tilegame.sprites.Ant;
 import com.brackeen.javagamebook.tilegame.sprites.Bear;
 import com.brackeen.javagamebook.tilegame.sprites.Bee;
 import com.brackeen.javagamebook.tilegame.sprites.Boss;
 import com.brackeen.javagamebook.tilegame.sprites.Creature;
+import com.brackeen.javagamebook.tilegame.sprites.CreepingDarkness;
+import com.brackeen.javagamebook.tilegame.sprites.DartFrog;
+import com.brackeen.javagamebook.tilegame.sprites.Dragonfly;
+import com.brackeen.javagamebook.tilegame.sprites.FireAnt;
+import com.brackeen.javagamebook.tilegame.sprites.Godzilla;
+import com.brackeen.javagamebook.tilegame.sprites.Gorilla;
+import com.brackeen.javagamebook.tilegame.sprites.Hyena;
+import com.brackeen.javagamebook.tilegame.sprites.Lion;
+import com.brackeen.javagamebook.tilegame.sprites.Moth;
 import com.brackeen.javagamebook.tilegame.sprites.Player;
 import com.brackeen.javagamebook.tilegame.sprites.PowerUp;
+import com.brackeen.javagamebook.tilegame.sprites.Raccoon;
+import com.brackeen.javagamebook.tilegame.sprites.Rhino;
+import com.brackeen.javagamebook.tilegame.sprites.ScaryMoon;
+import com.brackeen.javagamebook.tilegame.sprites.Scorpion;
+import com.brackeen.javagamebook.tilegame.sprites.Spooder;
+import com.brackeen.javagamebook.tilegame.sprites.Vulture;
 import com.brackeen.javagamebook.tilegame.sprites.Zombie;
 import com.brackeen.javagamebook.util.RandomUtil;
 import com.brackeen.javagamebook.util.TimeSmoothie;
@@ -799,6 +815,9 @@ public class GameManager extends GameCore {
 				switch (name)
 				{
 				case "Ant":
+					Ant ant = (Ant) resourceManager.ant.clone();
+					ant.setID(spawnID);
+					queueSprite(ant);
 					break;
 				case "Balloon":
 					System.out.println("BALLOON");
@@ -813,19 +832,60 @@ public class GameManager extends GameCore {
 					b.setID(spawnID);
 					queueSprite(b);
 					break;
+				case "creepingdarkness":
+					CreepingDarkness cd = (CreepingDarkness) resourceManager.creepingDarkness.clone();
+					cd.setID(spawnID);
+					queueSprite(cd);
+					break;
 				case "Boss":
 					break;
+				case "dartfrog":
+					DartFrog df = (DartFrog) resourceManager.dartFrog.clone();
+					df.setID(spawnID);
+					queueSprite(df);
+					break;
 				case "Dragonfly":
+					Dragonfly d = (Dragonfly) resourceManager.dragonfly.clone();
+					d.setID(spawnID);
+					queueSprite(d);
 					break;
 				case "FireAnt":
+					FireAnt fa = (FireAnt) resourceManager.fireAnt.clone();
+					fa.setID(spawnID);
+					queueSprite(fa);
 					break;
 				case "Fly":
+					break;
+				case "Godzilla":
+					Godzilla gz = (Godzilla) resourceManager.godzilla.clone();
+					gz.setID(spawnID);
+					queueSprite(gz);
+					break;
+				case "Gorilla":
+					Gorilla g = (Gorilla) resourceManager.gorilla.clone();
+					g.setID(spawnID);
+					queueSprite(g);
 					break;
 				case "Grub":
 					break;
 				case "HomingFly":
 					break;
+				case "Hyena":
+					Hyena h = (Hyena) resourceManager.hyena.clone();
+					h.setID(spawnID);
+					queueSprite(h);
+					break;
+				case "Lion":
+					Lion l = (Lion) resourceManager.lion.clone();
+					l.setID(spawnID);
+					queueSprite(l);
+					break;
 				case "Monkey":
+					break;
+				case "moth":
+					Moth m = (Moth) resourceManager.moth.clone();
+					m.setID(spawnID);
+					queueSprite(m);
 					break;
 				case "Player":
 					System.out.println("i have a clone, and he's coming to kill me");
@@ -837,10 +897,38 @@ public class GameManager extends GameCore {
 					queueSprite(p);
 					break;
 				case "Raccoon":
+					Raccoon rac = (Raccoon) resourceManager.raccoon.clone();
+					rac.setID(spawnID);
+					queueSprite(rac);
 					break;
 				case "RandomFly":
 					break;
+				case "Rhino":
+					Rhino rh = (Rhino) resourceManager.rhino.clone();
+					rh.setID(spawnID);
+					queueSprite(rh);
+					break;
+				case "ScaryMoon":
+					ScaryMoon sm = (ScaryMoon) resourceManager.scaryMoon.clone();
+					sm.setID(spawnID);
+					queueSprite(sm);
+					break;
+				case "Scorpion":
+					Scorpion sc = (Scorpion) resourceManager.scorpion.clone();
+					sc.setID(spawnID);
+					queueSprite(sc);
+					break;
 				case "SinuousFly":
+					break;
+				case "Spooder":
+					Spooder sp = (Spooder) resourceManager.spooder.clone();
+					sp.setID(spawnID);
+					queueSprite(sp);
+					break;
+				case "Vulture":
+					Vulture v = (Vulture) resourceManager.vulture.clone();
+					v.setID(spawnID);
+					queueSprite(v);
 					break;
 				case "Zombie":
 					System.out.println("THE BIG Z");
@@ -852,7 +940,6 @@ public class GameManager extends GameCore {
 					queueSprite(z);
 					break;
 				}
-				break;
 			case PacketManager.TYPE_CREATUREPOS:
 				
 				int posID = bb.getInt(1);

@@ -217,7 +217,7 @@ public class ResourceManager {
                 }
 
                 // check if the char represents a sprite
-                else if (ch == 'o') {
+                else if (ch == '$') {
                     addSprite(newMap, coinSprite, x, y);
                 }
                 else if (ch == '!') {
@@ -556,66 +556,82 @@ public class ResourceManager {
         	else
         	if(s.getArchType(x).compareTo("raccoon")==0) {
             	enemySprites[x]=new Raccoon(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            	raccoon = enemySprites[x];
             }
         	else
         	if(s.getArchType(x).compareTo("ant")==0) {
             	enemySprites[x]=new Ant(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+            	ant = enemySprites[x];
         	}
         	else
             if(s.getArchType(x).compareTo("fireant")==0) {
                 enemySprites[x]=new FireAnt(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+                fireAnt = enemySprites[x];
             }
         	else
             if(s.getArchType(x).compareTo("dragonfly")==0) {
                     enemySprites[x]=new Dragonfly(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+                    dragonfly = enemySprites[x];
             }
             else
         	if(s.getArchType(x).compareTo("scarymoon")==0) {
         	      enemySprites[x]=new ScaryMoon(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+        	      scaryMoon = enemySprites[x];
         	        }
         	else
         	if(s.getArchType(x).compareTo("creepingdarkness")==0) {
         	      enemySprites[x]=new CreepingDarkness(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+        	      creepingDarkness = enemySprites[x];
         	        }
         	else
         	if(s.getArchType(x).compareTo("spooder")==0) {
         	      enemySprites[x]=new Spooder(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+        	      spooder = enemySprites[x];
         	        }
         	else
             if(s.getArchType(x).compareTo("dartfrog")==0) {
-                    enemySprites[x]=new Dragonfly(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+                    enemySprites[x]=new DartFrog(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+                    dartFrog = enemySprites[x];
             }
             else
             if(s.getArchType(x).compareTo("godzilla")==0) {
                     enemySprites[x]=new Godzilla(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+                    godzilla = enemySprites[x];
             }
             else
             if(s.getArchType(x).compareTo("gorilla")==0) {
                     enemySprites[x]=new Gorilla(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+                    gorilla = enemySprites[x];
             }
             else
             if(s.getArchType(x).compareTo("hyena")==0) {
                     enemySprites[x]=new Hyena(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+                    hyena = enemySprites[x];
             }
             else
             if(s.getArchType(x).compareTo("lion")==0) {
                     enemySprites[x]=new Lion(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+                    lion = enemySprites[x];
             }
             else
             if(s.getArchType(x).compareTo("moth")==0) {
                     enemySprites[x]=new Moth(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+                    moth = enemySprites[x];
             }
             else
             if(s.getArchType(x).compareTo("rhino")==0) {
                     enemySprites[x]=new Rhino(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+                    rhino = enemySprites[x];
             }
             else
             if(s.getArchType(x).compareTo("scorpion")==0) {
                     enemySprites[x]=new Scorpion(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+                    scorpion = enemySprites[x];
             }
             else
             if(s.getArchType(x).compareTo("vulture")==0) {
                     enemySprites[x]=new Vulture(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+                    vulture = enemySprites[x];
             }
     }
     
