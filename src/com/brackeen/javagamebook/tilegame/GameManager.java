@@ -833,6 +833,7 @@ public class GameManager extends GameCore {
 					p.setX(100);
 					p.setY(250);
 					p.setID(spawnID);
+					p.local = false;
 					queueSprite(p);
 					break;
 				case "Raccoon":
@@ -893,6 +894,10 @@ public class GameManager extends GameCore {
 						}
 					}
 				}
+			}
+			if (networkManager.isServer())
+			{
+				networkManager.send(data);
 			}
     	}
     }
@@ -1015,7 +1020,9 @@ public class GameManager extends GameCore {
 			if (sprite instanceof Creature)
 			{
 				Creature creature = (Creature) sprite;
-				if (creature.getState() == Creature.STATE_DEAD)
+				if (creature instanceof Player && !((Player)(creature)).local)
+					continue;
+				else if (creature.getState() == Creature.STATE_DEAD)
 				{
 					if (networkManager.getCurrent() != null)
 						networkManager.send(PacketManager.genKillPacket(creature));

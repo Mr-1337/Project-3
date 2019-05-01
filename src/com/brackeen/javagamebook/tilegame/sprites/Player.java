@@ -11,6 +11,7 @@ public class Player extends Creature {
 //    private Throwable e = new Throwable();
     
 	public int consecutiveHits=0;
+	public boolean local = true;
 	
 	public static float playerJumpSpeedMultiplier = 1.0f;
 	
