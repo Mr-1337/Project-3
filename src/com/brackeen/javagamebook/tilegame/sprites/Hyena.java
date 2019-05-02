@@ -5,14 +5,12 @@ public class Hyena extends Creature
     public Hyena(Animation left, Animation right, Animation deadLeft, Animation deadRight)
     {
         super(left, right, deadLeft, deadRight);
-        trackPlayer = true;
-        intelligent = false;       
+        trackPlayer = true;      
         health = 2;
-        flying = false;
     }
 
     public float getMaxSpeed()
     {
-        return .201f * enemySpeedMultiplier;
+        return .3f * enemySpeedMultiplier;
     }
 }

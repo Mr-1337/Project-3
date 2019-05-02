@@ -13,6 +13,6 @@ public class Spooder extends Creature
 
     public float getMaxSpeed()
     {
-        return .45f * enemySpeedMultiplier;
+        return .245f * enemySpeedMultiplier;
     }
 }

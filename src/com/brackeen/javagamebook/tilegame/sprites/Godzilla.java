@@ -16,6 +16,9 @@ public class Godzilla  extends Creature{
 		health = 8;
 	}
 	
-	private static float SPEED = .3f;
+	public float getMaxSpeed()
+    {
+        return .05f * enemySpeedMultiplier;
+    }
 
 }

@@ -54,6 +54,8 @@ public class ResourceManager {
     public Sprite spooder;
     public Sprite vulture;
     public Sprite zombie;
+    public Sprite badBalloon;
+    public Sprite betBear;
     
     private Sprite[] enemySprites;
     private ScriptManager s;
@@ -496,6 +498,18 @@ public class ResourceManager {
 				      a.addFrame(images[i][imageIndex++], 50);
 				      enemyAnim[x][i] = a;
 				      }
+				else
+				if(s.getArchType(x).compareTo("badballoon")==0) {
+				      Animation a = new Animation();
+				      a.addFrame(images[i][imageIndex++], 50);
+				      enemyAnim[x][i] = a;
+				      }
+				else
+				if(s.getArchType(x).compareTo("betterbear")==0) {
+				      Animation a = new Animation();
+				      a.addFrame(images[i][imageIndex++], 50);
+				      enemyAnim[x][i] = a;
+				      }
             }
         }
 
@@ -632,7 +646,17 @@ public class ResourceManager {
             if(s.getArchType(x).compareTo("vulture")==0) {
                     enemySprites[x]=new Vulture(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
                     vulture = enemySprites[x];
+            }else
+            if(s.getArchType(x).compareTo("badballoon")==0) {
+                    enemySprites[x]=new BadBalloon(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+                    badBalloon = enemySprites[x];
             }
+            else
+            if(s.getArchType(x).compareTo("betterbear")==0) {
+                    enemySprites[x]=new BetterBear(enemyAnim[x][0], enemyAnim[x][1], enemyAnim[x][2], enemyAnim[x][3]);
+                    betBear = enemySprites[x];
+            }
+        
     }
     
     public String levelBackground()

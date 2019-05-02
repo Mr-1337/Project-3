@@ -6,12 +6,11 @@ public class Lion extends Creature
     {
         super(left, right, deadLeft, deadRight);
         trackPlayer = true;
-        intelligent = true;
         health = 2;
     }
 
     public float getMaxSpeed()
     {
-        return .5f * enemySpeedMultiplier;
+        return .2f * enemySpeedMultiplier;
     }
 }

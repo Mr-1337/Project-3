@@ -13,6 +13,9 @@ public class Gorilla  extends Creature{
 		health = 6;
 	}
 	
-	private static float SPEED = .2f;
+	public float getMaxSpeed()
+    {
+        return .25f * enemySpeedMultiplier;
+    }
 
 }

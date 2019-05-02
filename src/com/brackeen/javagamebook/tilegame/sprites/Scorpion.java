@@ -13,6 +13,6 @@ public class Scorpion extends Creature
 
     public float getMaxSpeed()
     {
-        return .155f * enemySpeedMultiplier;
+        return .03f * enemySpeedMultiplier;
     }
 }

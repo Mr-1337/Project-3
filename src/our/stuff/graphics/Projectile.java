@@ -9,10 +9,12 @@ public class Projectile extends Creature
 {
 
 	private float theta = 0f;
+	private float speed = 1.0f;
 	
-	public Projectile(Animation left, Animation right, Animation deadLeft, Animation deadRight, float x, float y)
+	public Projectile(Animation left, Animation right, Animation deadLeft, Animation deadRight, float x, float y, float speed)
 	{
 		super(left, right, deadLeft, deadRight);
+		this.speed = speed;
 		this.setX(x);
 		this.setY(y);
 		Player p = (Player)GameManager.getGameManagerInstance().getMap().getPlayer();
@@ -25,6 +27,11 @@ public class Projectile extends Creature
 		jumpSpeed = 0f;
 	}
 	
+	public Projectile(Animation left, Animation right, Animation deadLeft, Animation deadRight, float x, float y)
+	{
+		this(left, right, deadLeft, deadRight, x, y, 1.0f);
+	}
+	
 	@Override
 	public void update(long elapsedTime)
 	{
@@ -34,7 +41,7 @@ public class Projectile extends Creature
 	@Override
 	public float getMaxSpeed()
 	{
-		return Creature.enemySpeedMultiplier * 0.2f;
+		return Creature.enemySpeedMultiplier * 0.2f * speed;
 	} 
 
 }
